@@ -1,0 +1,88 @@
+html,body {
+    font-family: Helvetica;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* breadcrumbs */
+.breadcrumbs {
+    margin-top: 10px;
+}
+
+/* footer */
+#footer {
+    color: #bababa;
+    font-size: 12px;
+}
+#footer a {
+    color: #bababa;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.75s;
+}
+#footer a:hover {
+    color: black;
+}
+
+/* pulsanti di submit */
+div.form.wide .buttons {
+    padding-left: 10px;
+}
+div.buttons {
+    background: #eee;
+    padding: 10px;
+}
+/* negozio */
+a.tab {
+    text-decoration: none;
+}
+a.tab span {
+    border: 1px solid #C9E0ED;
+    margin-right: 5px;
+    padding: 10px;
+    text-transform: uppercase;
+}
+a.tab span:hover {
+    background: #eee;
+}
+a.tab .active {
+    background: #eee;
+}
+#sidebar dl.ditta dt {
+    color: #298dcd;
+    margin-top: 10px;
+}
+#sidebar dl.ditta dd {
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+table.fieldsets td { 
+    vertical-align: top;
+}
+
+/* profilazione */
+a.link {
+    text-decoration: none;
+}
+a.link span {
+    border: 1px solid #C9E0ED;
+    font-size: 16px;
+    margin-right: 5px;
+    padding: 10px;
+    text-transform: uppercase;
+}
+a.tab link:hover {
+    background: #eee;
+}
+
+/* campagne */
+.campaign {
+    background: #B7D6E7;
+    border: 1px solid #298dcd;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+}

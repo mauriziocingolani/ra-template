@@ -1,0 +1,3 @@
+[submodule "protected/components/framework"]
+	path = protected/components/framework
+	url = https://github.com/mauriziocingolani/yii_fmwk_php

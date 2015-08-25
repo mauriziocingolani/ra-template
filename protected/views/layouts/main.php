@@ -125,6 +125,9 @@
                     <?php echo CHtml::link('<i class="fa fa-twitter"></i>', 'http://www.twitter.com/m_cingolani', array('target' => 'blank')); ?>
                     <?php echo CHtml::link('<i class="fa fa-github"></i>', 'https://github.com/mauriziocingolani', array('target' => 'blank')); ?>
                 </p>
+                <?php if (true || !Yii::app()->user->isGuest) : ?>
+                    <small>Powered by <?php echo Html::link('Yii ' . Yii::getVersion(), 'http://www.yiiframework.com/doc/api/', array('target' => 'blank')); ?></small>
+                <?php endif; ?>
             </div>
 
         </div><!-- page -->

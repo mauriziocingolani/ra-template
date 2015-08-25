@@ -8,10 +8,10 @@ $config->addAlias(array(
     'widgets' => 'application.components.widgets',
 ));
 $config->addComponent(array(
-//    'cache' => array(
-//        'class' => 'system.caching.CDbCache',
-//        'connectionID' => 'db',
-//    ),
+    'cache' => array(
+        'class' => 'system.caching.CDbCache',
+        'connectionID' => 'db',
+    ),
 //    'twitter' => require(dirname(__FILE__) . '/files/twitter.php'),
     'user' => array(
         'class' => 'comp.ApplicationWebUser',
@@ -22,11 +22,7 @@ $config->addComponent(array(
 $config->addDbComponent();
 $config->addModule(array(
     'user',
-    'gii' => array(
-        'class' => 'system.gii.GiiModule',
-        'password' => 'cing11235MAUR',
-        'ipFilters' => array('194.168.0.84', '82.85.62.218', '37.116.187.212', '127.0.0.1', '::1'),
-    ),
+    'gii' => require(dirname(__FILE__) . '/files/gii.php'),
 ));
 $config->addSessionComponent(24 * 60 * 60, 'YiiSessions');
 $config->addStandardComponents(array(

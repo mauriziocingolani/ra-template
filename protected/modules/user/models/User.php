@@ -65,7 +65,7 @@ class User extends AbstractUserObject {
 
     public function getLastCompanies() {
         /*
-         * non è chiaro perchè mettendo distinct=true di perdono
+         * non è chiaro perchè mettendo distinct=true si perdono
          * le aziende con attività multiple...
          */
         $lastUpdated = Company::model()->findAll(array(

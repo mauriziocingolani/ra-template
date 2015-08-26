@@ -33,7 +33,7 @@
                     <table style="margin-bottom: 0;"> 
                         <tr>
                             <td style="padding-right: 0;width: 200px;">
-                                <?php echo CHtml::image('http://placehold.it/180x100?text=logo', '', array('style' => 'width: 180px;')); ?>
+                                <?php echo CHtml::image(Yii::app()->params['app']['logo'], '', array('style' => 'width: ' . Yii::app()->params['app']['logoWidth'] . ';')); ?>
                             </td>
                             <td style="text-align: right;"><?php echo CHtml::encode(Yii::app()->name); ?></td>
                         </tr>
@@ -95,7 +95,7 @@
                 <?php echo $content; ?>
             </div><!-- content -->
 
-            <?php if (!Yii::app()->user->isGuest && Yii::app()->controller->id == 'companies') : ?>
+            <?php if (false && !Yii::app()->user->isGuest && Yii::app()->controller->id == 'companies') : ?>
 
                 <?php $lasts = Yii::app()->user->user->lastCompanies; ?>
                 <?php if (count($lasts) > 0) : ?>

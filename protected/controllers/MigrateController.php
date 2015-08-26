@@ -18,7 +18,7 @@ class MigrateController extends TemplateController {
     }
 
     public function actionMigrate($action) {
-        $this->runMigrationTool(array($action));
+        $this->runMigrationTool(array($action, 1));
     }
 
     private function runMigrationTool(array $command) {
@@ -27,7 +27,7 @@ class MigrateController extends TemplateController {
         $runner->addCommands($commandPath);
         $commandPath = Yii::getFrameworkPath() . DIRECTORY_SEPARATOR . 'cli' . DIRECTORY_SEPARATOR . 'commands';
         $runner->addCommands($commandPath);
-        $args = array_merge(array('yiic', 'migrate'), $command, array('--interactive=0','--migrationTable=YiiMigrations'));
+        $args = array_merge(array('yiic', 'migrate'), $command, array('--interactive=0', '--migrationTable=YiiMigrations'));
 
         ob_start();
         $runner->run($args);

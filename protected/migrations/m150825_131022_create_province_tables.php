@@ -1,20 +1,20 @@
 <?php
 
-class m150825_131022_create_province_tables extends CDbMigration {
+class m150825_131022_create_province_tables extends DbMigration {
 
     public function safeUp() {
         #aree
         $this->createTable('aree', array(
-            'AreaID' => 'int(11) unsigned NOT NULL AUTO_INCREMENT',
-            'Area' => 'varchar(50) NOT NULL',
+            'AreaID' => self::Pk(),
+            'Area' => self::TypeVarchar(50, true),
             'Comuni' => 'int(3) unsigned NOT NULL',
             'Province' => 'int(3) unsigned NOT NULL',
             'Regioni' => 'int(3) unsigned NOT NULL',
-            'Popolazione' => 'int(11) unsigned NOT NULL',
-            'PopolazionePerc' => 'float NOT NULL',
-            'PRIMARY KEY (AreaID)',
+            'Popolazione' => self::TypeInt(true),
+            'PopolazionePerc' => self::TypeFloat(true),
+            self::Pk('AreaID'),
             'UNIQUE KEY unique_aree_area (Area)',
-                ), 'ENGINE=InnoDB CHARSET=latin1');
+                ), self::TableOptions());
         $this->insertMultiple('aree', array(
             array('AreaID' => '1', 'Area' => 'Italia Nord Occidentale', 'Comuni' => '3059', 'Province' => '25', 'Regioni' => '4', 'Popolazione' => '15861548', 'PopolazionePerc' => '26.6'),
             array('AreaID' => '2', 'Area' => 'Italia Nord Orientale', 'Comuni' => '1480', 'Province' => '22', 'Regioni' => '4', 'Popolazione' => '11521037', 'PopolazionePerc' => '19.3'),
@@ -24,20 +24,20 @@ class m150825_131022_create_province_tables extends CDbMigration {
         ));
         # regioni
         $this->createTable('regioni', array(
-            'RegioneID' => 'int(11) unsigned NOT NULL',
-            'AreaID' => 'int(11) unsigned NOT NULL',
-            'Regione' => 'varchar(50) NOT NULL',
-            'Residenti' => 'int(11) unsigned NOT NULL',
-            'ResidentiPerc' => 'float NOT NULL',
-            'Superficie' => 'int(11) unsigned NOT NULL',
-            'SuperficiePerc' => 'float NOT NULL',
-            'Densita' => 'float NOT NULL',
+            'RegioneID' => self::Pk(),
+            'AreaID' => self::TypeInt(true),
+            'Regione' => self::TypeVarchar(50, true),
+            'Residenti' => self::TypeInt(true),
+            'ResidentiPerc' => self::TypeFloat(true),
+            'Superficie' => self::TypeInt(true),
+            'SuperficiePerc' => self::TypeFloat(true),
+            'Densita' => self::TypeFloat(true),
             'Comuni' => 'int(3) unsigned NOT NULL',
             'Province' => 'int(3) unsigned NOT NULL',
-            'PRIMARY KEY (RegioneID)',
+            self::Pk('RegioneID'),
             'UNIQUE KEY unique_regioni_regione (Regione)',
                 ), 'ENGINE=InnoDB CHARSET=latin1');
-        $this->addForeignKey('fk_regioni_area', 'regioni', 'AreaID', 'aree', 'AreaID');
+        $this->addForeignKey('fk_regioni_area', 'regioni', 'AreaID', 'aree');
         $this->insertMultiple('regioni', array(
             array('RegioneID' => '1', 'AreaID' => '4', 'Regione' => 'Abruzzo', 'Residenti' => '1312507', 'ResidentiPerc' => '2.2', 'Superficie' => '10795', 'SuperficiePerc' => '3.6', 'Densita' => '121.6', 'Comuni' => '305', 'Province' => '4'),
             array('RegioneID' => '2', 'AreaID' => '4', 'Regione' => 'Basilicata', 'Residenti' => '576194', 'ResidentiPerc' => '1', 'Superficie' => '9995', 'SuperficiePerc' => '3.3', 'Densita' => '57.7', 'Comuni' => '131', 'Province' => '2'),
@@ -62,20 +62,20 @@ class m150825_131022_create_province_tables extends CDbMigration {
         ));
         # province
         $this->createTable('province', array(
-            'ProvinciaID' => 'int(11) unsigned NOT NULL',
-            'RegioneID' => 'int(11) unsigned DEFAULT NULL',
-            'Provincia' => 'varchar(50) NOT NULL',
-            'Residenti' => 'int(11) unsigned NOT NULL',
-            'ResidentiPerc' => 'float NOT NULL',
-            'Superrficie' => 'int(11) unsigned NOT NULL',
-            'Densita' => 'float NOT NULL',
+            'ProvinciaID' => self::Pk(),
+            'RegioneID' => self::TypeInt(true),
+            'Provincia' => self::TypeVarchar(50, true),
+            'Residenti' => self::TypeInt(true),
+            'ResidentiPerc' => self::TypeFloat(true),
+            'Superrficie' => self::TypeInt(true),
+            'Densita' => self::TypeFloat(true),
             'Comuni' => 'int(3) unsigned NOT NULL',
-            'Sigla' => 'varchar(2) NOT NULL',
-            'PRIMARY KEY (ProvinciaID)',
+            'Sigla' => self::TypeVarchar(2, true),
+            self::Pk('ProvinciaID'),
             'UNIQUE KEY unique_province_provincia (Provincia)',
             'UNIQUE KEY unique_province_sigla (Sigla)',
                 ), 'ENGINE=InnoDB CHARSET=latin1');
-        $this->addForeignKey('fk_province_regione', 'province', 'RegioneID', 'regioni', 'RegioneID');
+        $this->addForeignKey('fk_province_regione', 'province', 'RegioneID', 'regioni');
         $this->insertMultiple('province', array(
             array('ProvinciaID' => '1', 'RegioneID' => '15', 'Provincia' => 'Agrigento', 'Residenti' => '446081', 'ResidentiPerc' => '0.7', 'Superrficie' => '3042', 'Densita' => '146.6', 'Comuni' => '43', 'Sigla' => 'AG'),
             array('ProvinciaID' => '2', 'RegioneID' => '12', 'Provincia' => 'Alessandria', 'Residenti' => '427354', 'ResidentiPerc' => '0.7', 'Superrficie' => '3562', 'Densita' => '120', 'Comuni' => '190', 'Sigla' => 'AL'),
@@ -190,10 +190,10 @@ class m150825_131022_create_province_tables extends CDbMigration {
         ));
         # nazioni
         $this->createTable('nazioni', array(
-            'NazioneID' => 'int(11) unsigned NOT NULL AUTO_INCREMENT',
-            'NazioneIt' => 'varchar(255) NOT NULL',
-            'NazioneEn' => 'varchar(255) DEFAULT NULL',
-            'PRIMARY KEY (NazioneID)',
+            'NazioneID' => self::Pk(),
+            'NazioneIt' => self::TypeVarchar(255, true),
+            'NazioneEn' => self::TypeVarchar(255),
+            self::Pk('NazioneID'),
             'UNIQUE KEY unique_nazioni_nazioneit (NazioneIt)',
             'UNIQUE KEY unique_nazioni_nazioneen (NazioneEn)',
                 ), '');

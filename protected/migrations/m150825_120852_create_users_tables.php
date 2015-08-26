@@ -1,15 +1,15 @@
 <?php
 
-class m150825_120852_create_users_tables extends CDbMigration {
+class m150825_120852_create_users_tables extends DbMigration {
 
     public function safeUp() {
         # roles
         $this->createTable('roles', array(
-            'RoleID' => 'int(11) unsigned NOT NULL AUTO_INCREMENT',
-            'Description' => 'varchar(50) COLLATE latin1_general_ci NOT NULL',
-            'PRIMARY KEY (RoleID)',
+            'RoleID' => self::Pk(),
+            'Description' => self::TypeVarchar(50, true),
+            self::Pk('RoleID'),
             'UNIQUE KEY unique_roles_description (Description)',
-                ), 'ENGINE=InnoDB CHARSET=latin1');
+                ), self::TableOptions());
         $this->insertMultiple('roles', array(
             array('Description' => 'Developer'),
             array('Description' => 'Supervisor'),
@@ -17,20 +17,20 @@ class m150825_120852_create_users_tables extends CDbMigration {
         ));
         # utenti
         $this->createTable('users', array(
-            'UserID' => 'int(11) unsigned NOT NULL AUTO_INCREMENT',
-            'RoleID' => 'int(11) unsigned NOT NULL',
-            'UserName' => 'varchar(255) COLLATE latin1_general_ci NOT NULL',
-            'FirstName' => 'varchar(255) COLLATE latin1_general_ci NOT NULL',
-            'LastName' => 'varchar(255) COLLATE latin1_general_ci NOT NULL',
+            'UserID' => self::Pk(),
+            'RoleID' => self::TypeInt(true),
+            'UserName' => self::TypeVarchar(255, true),
+            'FirstName' => self::TypeVarchar(255, true),
+            'LastName' => self::TypeVarchar(255, true),
             'Gender' => 'enum(\'M\',\'F\') COLLATE latin1_general_ci NOT NULL DEFAULT \'M\'',
-            'Password' => 'char(60) COLLATE latin1_general_ci NOT NULL',
-            'Email' => 'varchar(255) COLLATE latin1_general_ci DEFAULT NULL',
+            'Password' => self::TypeChar(60, true),
+            'Email' => self::TypeVarchar(255),
             'Enabled' => 'tinyint(1) NOT NULL',
-            'PRIMARY KEY (UserID)',
+            self::Pk('UserID'),
             'UNIQUE KEY unique_users_username (UserName)',
             'KEY RoleID (RoleID)',
-                ), 'ENGINE=InnoDB CHARSET=latin1');
-        $this->addForeignKey('fk_users_roles', 'users', 'RoleID', 'roles', 'RoleID');
+                ), self::TableOptions());
+        $this->addForeignKey('fk_users_roles', 'users', 'RoleID', 'roles');
         $this->insert('users', array(
             'RoleID' => 1,
             'UserName' => Yii::app()->params['admin']['username'],
@@ -43,17 +43,17 @@ class m150825_120852_create_users_tables extends CDbMigration {
         ));
         # logins 
         $this->createTable('logins', array(
-            'LoginID' => 'int(11) unsigned NOT NULL AUTO_INCREMENT',
-            'SessionID' => 'char(32) NOT NULL',
-            'UserID' => 'int(11) unsigned DEFAULT NULL',
-            'UserName' => 'varchar(255) DEFAULT NULL',
-            'Login' => 'datetime DEFAULT NULL',
-            'Logout' => 'datetime DEFAULT NULL',
-            'IpAddress' => 'varchar(15) DEFAULT NULL',
-            'PRIMARY KEY (LoginID)',
+            'LoginID' => self::Pk(),
+            'SessionID' => self::TypeChar(32, true),
+            'UserID' => self::TypeInt(),
+            'UserName' => self::TypeVarchar(255),
+            'Login' => self::TypeDate(true),
+            'Logout' => self::TypeDate(true),
+            'IpAddress' => self::TypeVarchar(15),
+            self::Pk('LoginID'),
             'KEY UserID (UserID)',
-                ), 'ENGINE=InnoDB CHARSET=latin1');
-        $this->addForeignKey('fk_logins_users', 'logins', 'UserID', 'users', 'UserID');
+                ), self::TableOptions());
+        $this->addForeignKey('fk_logins_users', 'logins', 'UserID', 'users');
     }
 
     public function safeDown() {

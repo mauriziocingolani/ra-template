@@ -1,6 +1,6 @@
 <?php
 
-class m150825_113129_create_system_tables extends CDbMigration {
+class m150825_113129_create_system_tables extends DbMigration {
 
     public function safeUp() {
         $this->createTable('YiiSessions', array(

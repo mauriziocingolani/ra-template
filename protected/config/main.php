@@ -24,7 +24,7 @@ $config->addModule(array(
     'user',
     'gii' => require(dirname(__FILE__) . '/files/gii.php'),
 ));
-$config->addSessionComponent(24 * 60 * 60, 'YiiSessions');
+//$config->addSessionComponent(24 * 60 * 60, 'YiiSessions');
 $config->addStandardComponents(array(
     'urlManager.class' => 'application.components.framework.UrlManager',
 ));

@@ -1,6 +1,8 @@
 <?php
 /* @var $this CompaniesController */
 /* @var $model Company */
+/* @var $campaignCompany CampaignCompany */
+/* @var $campaigns Campaign[] */
 $this->pageTitle = $model->isNewRecord ? 'Nuova azienda' : 'Modifica azienda';
 $this->crumbs = array(
     'Aziende' => array('/aziende'),
@@ -62,5 +64,54 @@ Yii::app()->clientScript->registerCoreScript('jquery');
             </tr>
         </table>
     </div>
+
+
+    <div style="border-top: 1px solid #C9E0ED;margin-top: 10px;padding-top: 10px;">
+        <h3>Campagne associate</h3> 
+
+        <?php if (count($model->Campaigns) > 0) : ?>
+            <ul style="list-style: none;padding-left: 0;">
+                <?php foreach ($model->Campaigns as $cmp) : ?>
+                    <li style="display: inline-block;font-size: 10px;padding-bottom: 15px;">
+                        <span class="campaign">
+                            <?php if (Yii::app()->user->isSupervisor()) : ?>
+                                <a href="#" onclick="return submitDeleteCampaignCompany(<?= $cmp->CampaignCompanyID; ?>)" title="Clicca per disassociare da questa campagna"><i class="fa fa-times"></i></a>
+                            <?php endif; ?>
+                            <?= Html::encode($cmp->Campaign->Name); ?>
+                        </span>
+                        <?php if (Yii::app()->user->isSupervisor()) : ?>
+                            <form id="<?= $cmp->CampaignCompanyID; ?>_campaigncompany_delete_form" name="DeleteCampaignCompany" method="post">
+                                <input name="DeleteCampaignCompany[CampaignCompanyID]" type="hidden" value="<?= $cmp->CampaignCompanyID; ?>" />
+                            </form>
+                        <?php endif; ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+
+            <?php if (Yii::app()->user->isSupervisor()) : ?>
+                <script>
+                    function submitDeleteCampaignCompany(campaigncompanyid) {
+                        if (confirm('Sei sicuro di voler disassociare questa campagna?')) {
+                            $('#' + campaigncompanyid + '_campaigncompany_delete_form').submit();
+                        }
+                        return false;
+                    }
+                </script>
+            <?php endif; ?>
+
+        <?php else : ?>
+            <p><em>L'azienda non &egrave; associata a nessuna campagna.</em></p>
+        <?php endif; ?>
+
+        <?php
+        if (Yii::app()->user->isSupervisor())
+            $this->renderPartial('forms/_campaigns_form', array(
+                'campaignCompany' => $campaignCompany,
+                'campaigns' => $campaigns,
+            ));
+        ?>
+
+    </div>
+
 
 <?php endif; ?>

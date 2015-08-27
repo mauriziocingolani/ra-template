@@ -37,6 +37,7 @@ class CompaniesController extends TemplateController {
 
     public function actionCompany($companyid = null) {
         $model = (int) $companyid > 0 ? $this->_readCompany($companyid) : new Company;
+        $campaignCompany = new CampaignCompany;
         if (Yii::app()->request->isPostRequest) :
             if (isset($_POST['Company'])) :
                 $model->setAttributes($_POST['Company']);
@@ -89,10 +90,33 @@ class CompaniesController extends TemplateController {
                 } catch (CDbException $e) {
                     Yii::app()->user->setFlash('error', 'Impossibile eliminare l\'indirizzo email. Il server riporta:<p>' . $e->getMessage() . '</p>');
                 }
+            # assegnazione campagna
+            elseif (isset($_POST['CampaignCompany'])) :
+                $campaignCompany->setAttributes($_POST['CampaignCompany']);
+                $campaignCompany->setAttribute('CompanyID', $model->CompanyID);
+                if ($campaignCompany->validate()) :
+                    try {
+                        if ($campaignCompany->save()) :
+                            $this->refresh();
+                        endif;
+                    } catch (CDbException $e) {
+                        Yii::app()->user->setFlash('campaigncompany_error', 'La campagna &egrave; gi&agrave; assegnata all\'azienda.');
+                    }
+                endif;
+            # disassociazione campagna
+            elseif (isset($_POST['DeleteCampaignCompany'])) :
+                try {
+                    CampaignCompany::model()->deleteByPk($_POST['DeleteCampaignCompany']['CampaignCompanyID']);
+                    $this->refresh();
+                } catch (CDbException $e) {
+                    Yii::app()->user->setFlash('campaigncompany_error', 'Impossibile disassociare la campagna. Il server riporta:<p>' . $e->getMessage() . '</p>');
+                }
             endif;
         endif;
         $this->render('company', array(
             'model' => $model,
+            'campaignCompany' => $campaignCompany,
+            'campaigns' => Campaign::GetAssociable($model->CompanyID),
         ));
     }
 
@@ -342,7 +366,7 @@ class CompaniesController extends TemplateController {
     }
 
     private function _readCompany($companyid) {
-        $company = Company::model()->findByPk($companyid);
+        $company = Company::model()->with('Campaigns')->findByPk($companyid);
         if ($company == null) :
             throw new InvalidDatabaseObjectException('L\'azienda', true);
         endif;

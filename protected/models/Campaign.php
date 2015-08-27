@@ -200,6 +200,21 @@ class Campaign extends AbstractDatabaseObject {
         return self::model()->findAll(array('order' => 'StartDate DESC'));
     }
 
+    public static function GetAssociable($companyid) {
+        if ($companyid) :
+            $criteria = new CDbCriteria;
+            $criteria->addCondition('NOT EXISTS (' .
+                    'SELECT * FROM campaigns_companies ' .
+                    "WHERE CompanyID=:companyid " .
+                    "AND CampaignID=t.CampaignID" .
+                    ')');
+            $criteria->params = array(':companyid' => $companyid);
+            $criteria->order = 'StartDate DESC';
+            return self::model()->findAll($criteria);
+        endif;
+        return array();
+    }
+
     public static function GetScripts() {
         $tables = Yii::app()->db->schema->getTableNames();
         $scripts = array();

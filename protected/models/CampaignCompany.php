@@ -17,6 +17,13 @@ class CampaignCompany extends AbstractDatabaseObject {
         );
     }
 
+    public function rules() {
+        return array(
+            array('CampaignID', 'required', 'message' => 'Seleziona una campagna'),
+            array('CompanyID', 'required'),
+        );
+    }
+
     public function tableName() {
         return 'campaigns_companies';
     }

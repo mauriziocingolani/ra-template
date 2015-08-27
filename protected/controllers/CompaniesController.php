@@ -245,6 +245,11 @@ class CompaniesController extends TemplateController {
         if ($model == null) :
             throw new InvalidDatabaseObjectException('L\'azienda', true);
         endif;
+        # parametri
+        $pin = '';
+        $campaign = null;
+        $activity = null;
+        $profileModel = null;
         # gestione campagna
         $campaigns = $model->ActiveCampaigns; # tutte le campagne ATTIVE alla quale è associata l'azienda
         if (count($campaigns) > 0) :
@@ -256,22 +261,38 @@ class CompaniesController extends TemplateController {
                     return $this->redirect("/azienda/$companyid/profilazione/{$campaigns[0]->CampaignID}");
                 endif;
             else : # campagna impostata
-                Yii::app()->session['lastCampaign'] = array($companyid => $campaignid);
-            endif;
-        endif;
-        # parametri
-        $pin = '';
-        $campaign = null;
-        if ($campaignid) :
-            # trovo la campagna (è per forzo tra $campaigns!) e passo il nome alla view
-            foreach ($campaigns as $camp) :
-                if ($camp->CampaignID == $campaignid) :
-                    $campaign = Campaign::model()->findByPk($campaignid)->Name;
-                    break;
+                $found = false;
+                # verifico che la campagna impostata sia tra quelle attive
+                foreach ($campaigns as $actc) :
+                    if ($actc->CampaignID == $campaignid) :
+                        $found = true;
+                        break;
+                    endif;
+                endforeach;
+                if ($found) :
+                    Yii::app()->session['lastCampaign'] = array($companyid => $campaignid);
+                else :
+                    # seleziono la prossima campagna (se c'è) e ridirigo
+                    $this->redirect("/azienda/$companyid/profilazione" . (count($campaigns) > 0 ? '/' . $campaigns[0]->CampaignID : ''));
                 endif;
-            endforeach;
+            endif;
+            $activity = new Activity;
+            $campaign = Campaign::model()->findByPk($campaignid);
+            $modelName = $campaign->profileModel;
+            $pin = $campaign->Pin;
+            # cerco il record (se esiste, altrimenti lo creo nuovo)
+            $profileModel = $modelName::FindUnique($modelName::model(), $campaignid, $model->CompanyID);
+            if (!$profileModel) : # prima profilazione: creo il modello
+                $profileModel = new $modelName;
+                $profileModel->CampaignID = $campaignid;
+                $profileModel->CompanyID = $model->CompanyID;
+            endif;
+        else :
+            # se non ho più campagne ma sto cercando di profilarne una ridirigo
+            # alla pagina generica (senza campagne)
+            if ($campaignid)
+                $this->redirect("/azienda/$companyid/profilazione");
         endif;
-        $activity = new Activity;
         # POST
         if (Yii::app()->request->isPostRequest) :
             # salvataggio attività
@@ -282,6 +303,7 @@ class CompaniesController extends TemplateController {
                     if ($activity->save()) :
                         $model = Company::model()->with('Activities')->findByPk($companyid); # ricarico il modello per aggiornare la lista delle attività
                         Yii::app()->user->setFlash('activity_success', 'Attività registrata!');
+                        $this->refresh();
                     endif;
                 } catch (CDbException $e) {
                     Yii::app()->user->setFlash('activity_error', $e->getMessage());
@@ -295,6 +317,16 @@ class CompaniesController extends TemplateController {
                 } catch (CDbException $e) {
                     Yii::app()->user->setFlash('activity_error', 'Impossibile eliminare l\'attivit&agrave;: ' . $e->getMessage());
                 }
+            else : # profilazione (non so quale sarà il modello!)
+                $profileModel->setAttributes($_POST[get_class($profileModel)]);
+                try {
+                    if ($profileModel->save()) :
+                        Yii::app()->user->setFlash(get_class($profileModel) . '_success', 'Dati registrati!');
+                        $this->refresh();
+                    endif;
+                } catch (CDbException $e) {
+                    Yii::app()->user->setFlash(get_class($profileModel) . '_error', $e->getMessage());
+                }
             endif;
         endif;
         #
@@ -302,7 +334,8 @@ class CompaniesController extends TemplateController {
             'model' => $model,
             'campaigns' => $campaigns,
             'campaignid' => $campaignid,
-            'campaign' => $campaign,
+            'campaignName' => $campaign ? $campaign->Name : null,
+            'profileModel' => $profileModel,
             'pin' => $pin,
             'activity' => $activity,
         ));

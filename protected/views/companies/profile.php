@@ -3,7 +3,7 @@
 /* @var $model Company */
 /* @var $campaigns CampaignCompany[] */
 /* @var $campaignid integer */
-/* @var $campaign string */
+/* @var $campaignName string */
 /* @var $activity Activity */
 $this->pageTitle = 'Profilazione';
 $this->crumbs = array(
@@ -19,7 +19,7 @@ Yii::app()->clientScript->registerCoreScript('jquery');
 <h1>
     Azienda <u><?= Html::encode($model->CompanyName); ?></u> - PROFILAZIONE
     <?php if ($campaignid) : ?>
-        <small>(campagna <u><?= Html::encode($campaign); ?></u>)</small>
+        <small>(campagna <u><?= Html::encode($campaignName); ?></u>)</small>
     <?php endif; ?>
 </h1>
 
@@ -63,7 +63,7 @@ Yii::app()->clientScript->registerCoreScript('jquery');
                     <div class="portlet-title">
                         Profilazione
                         <?php if ($campaignid) : ?>
-                            <small>(campagna <u><?= Html::encode($campaign); ?></u>)</small>
+                            <small>(campagna <u><?= Html::encode($campaignName); ?></u>)</small>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -71,7 +71,7 @@ Yii::app()->clientScript->registerCoreScript('jquery');
                     <?php if ($campaignid) : ?>
                         <div class="form">
                             <p style="background: yellow;font-weight: bold;padding: 5px;">ATTENZIONE: prima aggiornare la profilazione, poi registrare l'attivit&agrave;!</p>
-                            <?php #$this->renderPartial('_' . get_class($profileModel), array('model' => $profileModel));    ?>
+                            <?php $this->renderPartial('scripts/_' . get_class($profileModel), array('model' => $profileModel)); ?>
                         </div>
                     <?php else : ?>
                         <em>Questa agenzia non &egrave; associata a nessuna delle tue campagne, quindi non pu&ograve; essere profilata.</em>
@@ -139,7 +139,7 @@ Yii::app()->clientScript->registerCoreScript('jquery');
     <?php foreach ($profiles as $campagna => $d) : ?>
         <div class="campaign">
             <strong><?= Html::encode($campagna); ?></strong>
-            <span style="color: gray;float: right;"><?php echo $d['timestamp']; ?></span>
+            <span style="color: gray;float: right;"><?php echo date('d/m/Y', $d['timestamp']); ?></span>
         </div>
         <p>
             <?php foreach ($d['answers'] as $question => $answer) : ?>

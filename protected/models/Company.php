@@ -105,6 +105,15 @@ class Company extends AbstractDatabaseObject {
                 "AND Description<>'R'" .
                 ')');
         $criteria->params = array(':companyid' => $this->CompanyID);
+        if (!Yii::app()->user->isDeveloper()) :
+            # per gli utenti normali limito le campagne attive a quelle assegnate loro
+            $criteria->addCondition('EXISTS (' .
+                    'SELECT * FROM users_campaigns ' .
+                    'WHERE UserID=:userid ' .
+                    'AND CampaignID=t.CampaignID ' .
+                    ')');
+            $criteria->params[':userid'] = Yii::app()->user->id;
+        endif;
         return CampaignCompany::model()->findAll($criteria);
     }
 
@@ -129,7 +138,7 @@ class Company extends AbstractDatabaseObject {
             if ($p)
                 $data[$camp->Campaign->Name] = array(
                     'answers' => $p->getAnswers(),
-                    'timestamp' => strtotime($p->Updated),
+                    'timestamp' => strtotime($p->Created),
                 );
         }
         return $data;

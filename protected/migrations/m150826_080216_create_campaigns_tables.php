@@ -41,8 +41,8 @@ class m150826_080216_create_campaigns_tables extends DbMigration {
         # script di esempio
         $this->createTable('script_1a0f3f9_test', array(
             'ScriptID' => self::Pk(),
-            'Udated' => self::TypeDate(true),
-            'UpdatedBy' => self::TypeInt(),
+            'Created' => self::TypeDate(true),
+            'CreatedBy' => self::TypeInt(),
             'CampaignID' => self::TypeInt(true),
             'CompanyID' => self::TypeInt(true),
             self::Pk('ScriptID'),
@@ -50,7 +50,7 @@ class m150826_080216_create_campaigns_tables extends DbMigration {
             'Q2' => "enum('Opzione1','Opzione2','Altro') NOT NULL",
             'Q2t' => 'text DEFAULT NULL',
                 ), self::TableOptions());
-        $this->addForeignKey('fk_script1a0f3f9test_updatedby', 'script_1a0f3f9_test', 'UpdatedBy', 'users', 'UserID');
+        $this->addForeignKey('fk_script1a0f3f9test_createdby', 'script_1a0f3f9_test', 'CreatedBy', 'users', 'UserID');
         $this->addForeignKey('fk_script1a0f3f9test_campaign', 'script_1a0f3f9_test', 'CampaignID', 'campaigns');
         $this->addForeignKey('fk_script1a0f3f9test_company', 'script_1a0f3f9_test', 'CompanyID', 'companies');
         # activity_types
@@ -80,7 +80,7 @@ class m150826_080216_create_campaigns_tables extends DbMigration {
             'ContactID' => self::TypeInt(),
             'ActivityTypeID' => self::TypeInt(true),
             'RecallDateTime' => self::TypeDate(true),
-            'RecallPrioritary' => 'tinyint(1) NOT NULL',
+            'RecallPrioritary' => "tinyint(1) DEFAULT '0'",
             'Notes' => 'text DEFAULT NULL',
             self::Pk('ActivityID'),
                 ), self::TableOptions());

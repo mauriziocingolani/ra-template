@@ -2,9 +2,17 @@
 
 abstract class ScriptActiveRecord extends AbstractDatabaseObject {
 
-    public $Script;
+    public $ScriptID;
+    public $Created;
+    public $CreatedBy;
     public $CampaignID;
     public $CompanyID;
+
+    public function relations() {
+        return array(
+            'Creator' => array(self::BELONGS_TO, 'User', 'CreatedBy'),
+        );
+    }
 
     /** Deve restituire un array con i valori dei campi definiti per lo script. */
     abstract public function getFieldValues();
@@ -29,7 +37,7 @@ abstract class ScriptActiveRecord extends AbstractDatabaseObject {
     abstract public static function GetDummyFieldValues();
 
     public static function FindUnique(ScriptActiveRecord $model, $campaignid, $companyid) {
-        return $model->find(array(
+        return $model->with('Creator')->find(array(
                     'condition' => 'CampaignID=:campaignid AND CompanyID=:companyid',
                     'params' => array(':campaignid' => $campaignid, ':companyid' => $companyid),
         ));

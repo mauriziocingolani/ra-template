@@ -123,11 +123,14 @@ class User extends AbstractUserObject {
     }
 
     public static function GetOperatori() {
-        return self::model()->findAll(array(
-                    'condition' => 'Enabled=1 AND RoleID=:role',
-                    'params' => array(':role' => Role::ROLE_OPERATORE),
-                    'order' => 'UserName',
-        ));
+        $criteria = new CDbCriteria;
+        $criteria->condition = 'Enabled=1';
+        $roles = array(ApplicationWebUser::ROLE_OPERATORE);
+        if (Yii::app()->user->isDeveloper())
+            $roles = array_merge($roles, array(ApplicationWebUser::ROLE_SUPERVISOR, ApplicationWebUser::ROLE_DEVELOPER));
+        $criteria->addInCondition('RoleID', $roles);
+        $criteria->order = 'UserName';
+        return self::model()->findAll($criteria);
     }
 
     /* Ajax */

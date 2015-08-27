@@ -2,7 +2,7 @@
 
 /**
  * @property integer $CampaignID
- * @property integer $Name
+ * @property string $Name
  * @property string $ScriptTable
  * @property string $Pin
  * @property integer $StartDate

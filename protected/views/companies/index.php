@@ -1,8 +1,9 @@
 <?php
 /* @var $this CompaniesController */
 /* @var $companies Company[] */
+$this->pageTitle = 'Aziende';
 $this->crumbs = array(
-    'Aziende',
+    $this->pageTitle,
 );
 Yii::app()->clientScript->registerScript('search', "
 $('.search-button').click(function(){

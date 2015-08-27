@@ -240,6 +240,74 @@ class CompaniesController extends TemplateController {
             $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
     }
 
+    public function actionProfile($companyid, $campaignid = null) {
+        $model = Company::model()->with('Activities', 'Campaigns', 'Contacts')->findByPk($companyid);
+        if ($model == null) :
+            throw new InvalidDatabaseObjectException('L\'azienda', true);
+        endif;
+        # gestione campagna
+        $campaigns = $model->ActiveCampaigns; # tutte le campagne ATTIVE alla quale è associata l'azienda
+        if (count($campaigns) > 0) :
+            if (!$campaignid) : # nessuna campagna impostata
+                if (isset(Yii::app()->session['lastCampaign'][$companyid])) : # campaignid in memoria
+                    return $this->redirect("/azienda/$companyid/profilazione/" . Yii::app()->session['lastCampaign'][$companyid]);
+                else :
+                    Yii::app()->session['lastCampaign'] = array($companyid => $campaigns[0]->CampaignID);
+                    return $this->redirect("/azienda/$companyid/profilazione/{$campaigns[0]->CampaignID}");
+                endif;
+            else : # campagna impostata
+                Yii::app()->session['lastCampaign'] = array($companyid => $campaignid);
+            endif;
+        endif;
+        # parametri
+        $pin = '';
+        $campaign = null;
+        if ($campaignid) :
+            # trovo la campagna (è per forzo tra $campaigns!) e passo il nome alla view
+            foreach ($campaigns as $camp) :
+                if ($camp->CampaignID == $campaignid) :
+                    $campaign = Campaign::model()->findByPk($campaignid)->Name;
+                    break;
+                endif;
+            endforeach;
+        endif;
+        $activity = new Activity;
+        # POST
+        if (Yii::app()->request->isPostRequest) :
+            # salvataggio attività
+            if (isset($_POST['Activity'])) :
+                $activity->setAttributes($_POST['Activity']);
+                $activity->setAttribute('CompanyID', $model->CompanyID);
+                try {
+                    if ($activity->save()) :
+                        $model = Company::model()->with('Activities')->findByPk($companyid); # ricarico il modello per aggiornare la lista delle attività
+                        Yii::app()->user->setFlash('activity_success', 'Attività registrata!');
+                    endif;
+                } catch (CDbException $e) {
+                    Yii::app()->user->setFlash('activity_error', $e->getMessage());
+                }
+            # eliminazione attività
+            elseif (isset($_POST['DeleteActivity'])) :
+                try {
+                    Activity::model()->deleteByPk($_POST['DeleteActivity']['ActivityID']);
+                    Yii::app()->user->setFlash('activity_success', 'Attivit&agrave; eliminata!');
+                    $this->refresh();
+                } catch (CDbException $e) {
+                    Yii::app()->user->setFlash('activity_error', 'Impossibile eliminare l\'attivit&agrave;: ' . $e->getMessage());
+                }
+            endif;
+        endif;
+        #
+        $this->render('profile', array(
+            'model' => $model,
+            'campaigns' => $campaigns,
+            'campaignid' => $campaignid,
+            'campaign' => $campaign,
+            'pin' => $pin,
+            'activity' => $activity,
+        ));
+    }
+
     private function _readCompany($companyid) {
         $company = Company::model()->findByPk($companyid);
         if ($company == null) :

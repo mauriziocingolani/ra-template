@@ -1,8 +1,9 @@
 <?php
 /* @var $this CampaignsController */
+$this->pageTitle = 'Statistiche campagne';
 $this->crumbs = Array(
     'Campagne' => array('/campagne'),
-    'Statistiche campagne',
+    $this->pageTitle,
 );
 ?>
 

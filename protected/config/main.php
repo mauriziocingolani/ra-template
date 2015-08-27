@@ -12,7 +12,7 @@ $config->addComponent(array(
         'class' => 'system.caching.CDbCache',
         'connectionID' => 'db',
     ),
-//    'twitter' => require(dirname(__FILE__) . '/files/twitter.php'),
+    'twitter' => require(dirname(__FILE__) . '/files/twitter.php'),
     'user' => array(
         'class' => 'comp.ApplicationWebUser',
         'allowAutoLogin' => false,
@@ -20,11 +20,12 @@ $config->addComponent(array(
     ),
 ));
 $config->addDbComponent();
+$config->addMailComponent();
 $config->addModule(array(
     'user',
     'gii' => require(dirname(__FILE__) . '/files/gii.php'),
 ));
-//$config->addSessionComponent(24 * 60 * 60, 'YiiSessions');
+$config->addSessionComponent(24 * 60 * 60, 'YiiSessions');
 $config->addStandardComponents(array(
     'urlManager.class' => 'application.components.framework.UrlManager',
 ));
@@ -33,6 +34,7 @@ $config->addStandardImports(array(
     'application.modules.user.models.*',
     'application.modules.user.components.*',
     'application.vendors.phpexcel.PHPExcel',
+    'ext.yii-mail.YiiMailMessage',
 ));
 
 return $config->getConfig();

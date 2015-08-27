@@ -13,7 +13,7 @@ class m150825_135134_create_companies_tables extends DbMigration {
             'CompanyName' => self::TypeVarchar(500, true),
             'CompanyLegalName' => self::TypeVarchar(500),
             'CompanyGroup' => self::TypeVarchar(500),
-            'CompanyCode' => self::TypeInt(),
+            'CompanyCode' => self::TypeVarchar(50),
             'Notes' => 'text',
             'Slug' => self::TypeVarchar(500, true),
             self::Pk('CompanyID'),

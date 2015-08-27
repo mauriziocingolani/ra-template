@@ -1,7 +1,8 @@
 <?php
 /* @var $this CampaignsController */
+$this->pageTitle = 'Campagne';
 $this->crumbs = array(
-    'Campagne',
+    $this->pageTitle,
 );
 Yii::app()->clientScript->registerScript('search', "
 $('.search-button').click(function(){

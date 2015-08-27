@@ -12,6 +12,19 @@
  * @property strinf $CompanyCode
  * @property string $Notes
  * @property string $Slug
+ * 
+ * @property User $createdBy
+ * @property User $updatedBy
+ * @property CompaniesTags[] $companiesTags
+ * @property CompanyAddresses[] $Addresses
+ * @property CompanyContact[] $Contacts
+ * @property CompanyPhones[] $Phones
+ * @property CompanyEmails[] $Emails
+ * @property Activity[] $Activities
+ * @property CompanyRevenue[] $Revenues
+ * @property CompanyVoucher[] $Vouchers
+ * @property CampaignCompany[] $Campaigns
+ * @property CampaignCompany[] $ActiveCampaigns
  */
 class Company extends AbstractDatabaseObject {
 
@@ -39,8 +52,8 @@ class Company extends AbstractDatabaseObject {
             'Contacts' => array(self::HAS_MANY, 'CompanyContact', 'CompanyID'),
             'Phones' => array(self::HAS_MANY, 'CompanyPhone', 'CompanyID', 'order' => 'PhoneType,PhoneNumber'),
             'Emails' => array(self::HAS_MANY, 'CompanyEmail', 'CompanyID', 'order' => 'Emails.Address'),
-//            'Activities' => array(self::HAS_MANY, 'Activity', 'CompanyID', 'order' => 'Campaign.StartDate DESC,Activities.Created DESC', 'with' => array('Creator', 'Campaign')),
-//            'Campaigns' => array(self::HAS_MANY, 'CampaignCompany', 'CompanyID', 'with' => 'Campaign', 'together' => false),
+            'Activities' => array(self::HAS_MANY, 'Activity', 'CompanyID', 'order' => 'Campaign.StartDate DESC,Activities.Created DESC', 'with' => array('Creator', 'Campaign')),
+            'Campaigns' => array(self::HAS_MANY, 'CampaignCompany', 'CompanyID', 'with' => 'Campaign', 'together' => false),
         );
     }
 
@@ -80,6 +93,47 @@ class Company extends AbstractDatabaseObject {
 
     /* Eventi */
     /* Metodi */
+
+    public function getActiveCampaigns() {
+        $criteria = new CDbCriteria;
+        $criteria->addCondition('CompanyID=:companyid');
+        $criteria->addCondition('NOT EXISTS (' .
+                'SELECT * FROM activities ' .
+                'JOIN activity_types USING(ActivityTypeID) ' .
+                'WHERE CompanyID=t.CompanyID ' .
+                'AND CampaignID=t.CampaignID ' .
+                "AND Description<>'R'" .
+                ')');
+        $criteria->params = array(':companyid' => $this->CompanyID);
+        return CampaignCompany::model()->findAll($criteria);
+    }
+
+    public function getAllActivities($campaignid = null) {
+        $data = array();
+        foreach ($this->Activities as $act) {
+            if (!$campaignid || $campaignid == $act->CampaignID) :
+                if (!isset($data[$act->CampaignID])) :
+                    $data[$act->CampaignID] = array('campaign' => $act->Campaign, 'activities' => array());
+                endif;
+                $data[$act->CampaignID]['activities'][] = $act;
+            endif;
+        }
+        return $data;
+    }
+
+    public function getAllProfiles() {
+        $data = array();
+        foreach ($this->Campaigns as $camp) {
+            $n = $camp->Campaign->profileModel;
+            $p = $n::FindUnique($n::model(), $camp->CampaignID, $this->CompanyID);
+            if ($p)
+                $data[$camp->Campaign->Name] = array(
+                    'answers' => $p->getAnswers(),
+                    'timestamp' => strtotime($p->Updated),
+                );
+        }
+        return $data;
+    }
 
     public function search() {
         $criteria = new CDbCriteria;

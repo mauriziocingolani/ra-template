@@ -17,9 +17,4 @@
        style="margin-top: 20px;">
         <span>profilazione</span>
     </a>
-    <a class="link <?php if (Yii::app()->controller->id == 'companies' && Yii::app()->controller->action->id == 'business') echo 'active'; ?>" 
-       href="/azienda/<?= $model->CompanyID; ?>/dati-commerciali" 
-       style="margin-top: 20px;">
-        <span>dati commerciali</span>
-    </a>
 </p>

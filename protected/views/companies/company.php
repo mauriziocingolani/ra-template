@@ -1,9 +1,10 @@
 <?php
 /* @var $this CompaniesController */
 /* @var $model Company */
+$this->pageTitle = $model->isNewRecord ? 'Nuova azienda' : 'Modifica azienda';
 $this->crumbs = array(
     'Aziende' => array('/aziende'),
-    $model->isNewRecord ? 'Nuova azienda' : 'Modifica azienda',
+    $this->pageTitle,
 );
 Yii::app()->clientScript->registerCoreScript('jquery');
 ?>
@@ -17,7 +18,7 @@ Yii::app()->clientScript->registerCoreScript('jquery');
 
 <?php else : ?>
 
-    <?php $this->renderPartial('forms/_company_pages', array('model' => $model)); ?>
+    <?php $this->renderPartial('_company_pages', array('model' => $model)); ?>
 
     <h1>
         Azienda <u><?= Html::encode($model->CompanyName); ?></u>

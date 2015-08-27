@@ -7,10 +7,6 @@
  */
 class Role extends CActiveRecord {
 
-    const ROLE_DEVELOPER = 1;
-    const ROLE_SUPERVISOR = 2;
-    const ROLE_OPERATORE = 3;
-
     public function tableName() {
         return 'roles';
     }

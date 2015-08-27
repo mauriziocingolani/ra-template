@@ -56,7 +56,7 @@ class UserController extends Controller {
             $password = 'gatt8484VANI@';
 //            $password=  substr(md5(time()), 0,10);
             $user->setAttributes(array(
-                'RoleID' => Role::ROLE_OPERATORE,
+                'RoleID' => ApplicationWebUser::ROLE_OPERATORE,
                 'UserName' => 'operatore4',
                 'FirstName' => 'Vanina',
                 'LastName' => 'Gatti',
@@ -74,30 +74,31 @@ class UserController extends Controller {
 
     public function actionCreateUsers() {
         $users1 = array(
-//            array('Fava', 'Lucia', 'l.fava@ggfgroup.it'),
-//            array('Osmani', 'Laura', 'l.osmani@ggfgroup.it'),
-//            array('Bartolomei', 'Chiara', 'c.bartolomei@ggfgroup.it'),
-//            array('Chiarappa', 'Danilo', 'd.chiarappa@ggfgroup.it'),
-//            array('Torretti', 'Sabrina', 's.torretti@ggfgroup.it'),
-            array('operatorex', 'Sabrina', null),
+            array('Fava', 'Lucia', 'fava', 'l.fava@ggfgroup.it', ApplicationWebUser::ROLE_SUPERVISOR),
         );
         foreach ($users1 as $u) :
             try {
                 $user = new User;
-                $password = substr(md5(time()), 0, 12);
+                $password = PasswordHelper::GeneratePassword(16);
                 $user->setAttributes(array(
-                    'RoleID' => Role::ROLE_OPERATORE,
-                    'UserName' => strtolower(preg_replace('/[^a.-zA-Z]/', '', $u[0])),
+                    'RoleID' => $u[4],
+                    'UserName' => $u[2],
                     'FirstName' => $u[1],
                     'LastName' => $u[0],
                     'Password' => CPasswordHelper::hashPassword($password),
-                    'Email' => $u[2] ? $u[2] : null,
+                    'Email' => $u[3] ? $u[3] : null,
                     'Enabled' => 1,
                         ), false);
-                CVarDumper::dump($user->save(), 10, true);
-                CVarDumper::dump($user->UserName, 10, true);
-                CVarDumper::dump($password, 10, true);
-//                CVarDumper::dump(CPasswordHelper::hashPassword($password), 10, true);
+                if ($user->save() && $u[3]) :
+                    $message = new YiiMailMessage;
+                    $message->view = 'account';
+                    $message->from = 'webmaster@remoteaccount.it';
+                    $message->subject = 'Remote Account Template - Account gestionale';
+                    $message->setBody(array('username' => $user->UserName, 'password' => $password), 'text/html');
+                    $message->setTo($user->Email);
+                    $message->setCc('m.cingolani@ggfgroup.it');
+                    CVarDumper::dump(Yii::app()->mail->send($message), 10, true);
+                endif;
             } catch (CDbException $e) {
                 CVarDumper::dump($e->getMessage(), 10, true);
             }

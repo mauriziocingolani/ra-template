@@ -27,6 +27,7 @@
         <ul>
             <?php if (Yii::app()->user->isDeveloper()) : ?>
                 <li><?= Html::link('Pulizia db', '/utility/pulizia-db'); ?></li>
+                <li><?= Html::link('Creazione utente', '/utility/creazione-utente'); ?></li>
                 <li>... per Developer ...</li>
             <?php endif; ?>
             <li>...</li>

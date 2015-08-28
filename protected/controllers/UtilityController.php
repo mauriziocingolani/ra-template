@@ -41,4 +41,20 @@ class UtilityController extends TemplateController {
         ));
     }
 
+    public function actionCreateUser() {
+        $model = new User;
+        if (Yii::app()->getRequest()->isPostRequest) :
+            $model->setAttributes($_POST['User'], true);
+            $result = $model->saveModel();
+            if ($result === true) :
+                Yii::app()->user->setFlash('success', 'Utente creato! Le credenziali di accesso sono state inviate per email.');
+            else :
+                Yii::app()->user->setFlash('error', "Impossibile creare il novo utente. Il server riporta:<br /><br /><em>$result</em>");
+            endif;
+        endif;
+        $this->render('createUser', array(
+            'model' => $model,
+        ));
+    }
+
 }

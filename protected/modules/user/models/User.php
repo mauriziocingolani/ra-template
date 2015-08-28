@@ -20,10 +20,28 @@
  */
 class User extends AbstractUserObject {
 
+    public function attributeLabels() {
+        return array(
+            'RoleID' => 'Ruolo',
+            'UserName' => 'Nome utente',
+            'FirstName' => 'Nome',
+            'LastName' => 'Cognome',
+            'Gender' => 'Sesso',
+        );
+    }
+
     public function relations() {
         return array(
             'Role' => array(self::BELONGS_TO, 'Role', 'RoleID'),
             'Campaigns' => array(self::HAS_MANY, 'UserCampaign', 'UserID', 'with' => array('Campaign'), 'together' => false),
+        );
+    }
+
+    public function rules() {
+        return array(
+            array('UserName, FirstName, LastName', 'required', 'message' => 'Campo obbligatorio'),
+            array('Email', 'email', 'message' => 'Indirizzo email non valido'),
+            array('RoleID, Gender', 'safe'),
         );
     }
 
@@ -55,12 +73,8 @@ class User extends AbstractUserObject {
 
     /* Metodi */
 
-    public function hasCampaign($campaignid) {
-        foreach ($this->Campaigns as $cam) :
-            if ($cam->CampaignID == $campaignid)
-                return true;
-        endforeach;
-        return false;
+    public function getGenderOptions() {
+        return self::GetEnumValues($this->tableName(), 'Gender', true);
     }
 
     public function getLastCompanies() {
@@ -111,6 +125,43 @@ class User extends AbstractUserObject {
         $campaigns = UserCampaign::model()->findAll($criteria);
 
         return $campaigns;
+    }
+
+    public function hasCampaign($campaignid) {
+        foreach ($this->Campaigns as $cam) :
+            if ($cam->CampaignID == $campaignid)
+                return true;
+        endforeach;
+        return false;
+    }
+
+    public function saveModel() {
+        if ($this->validate()) {
+            try {
+                $transaction = Yii::app()->db->beginTransaction();
+                $password = PasswordHelper::GeneratePassword(20, true);
+                $this->Enabled = 1;
+                $this->Password = CPasswordHelper::hashPassword($password);
+                if ($this->save(false)) :
+                    $message = new YiiMailMessage;
+                    $message->view = 'account';
+                    $message->from = 'webmaster@remoteaccount.it';
+                    $message->subject = 'Remote Account Template - Account gestionale';
+                    $message->setBody(array('username' => $this->UserName, 'password' => $password), 'text/html');
+                    $message->setTo($this->Email ? $this->Email : Yii::app()->params['admin']['email']);
+                    $message->setCc(Yii::app()->params['admin']['email']);
+                    if (!Yii::app()->mail->send($message)) :
+                        $transaction->rollback();
+                        return 'Imposssibile inviare il messaggio email con le credenziali del nuovo utente. Creazione abortita.';
+                    endif;
+                endif;
+                $transaction->commit();
+                return true;
+            } catch (CDbException $e) {
+                $transaction->rollback();
+                return $e->getMessage();
+            }
+        }
     }
 
     /* Metodi statici */

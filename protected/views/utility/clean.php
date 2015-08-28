@@ -1,9 +1,10 @@
 <?php
 /* @var $this UtilityController */
 /* @var $model UtilityCleanDbForm */
+$this->pageTitle = 'Pulizia db';
 $this->crumbs = array(
     'Utility',
-    'Pulizia Db',
+    $this->pageTitle,
 );
 ?>
 

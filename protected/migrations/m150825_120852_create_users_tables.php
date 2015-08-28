@@ -38,7 +38,7 @@ class m150825_120852_create_users_tables extends DbMigration {
             'LastName' => 'Cingolani',
             'Gender' => 'M',
             'Password' => CPasswordHelper::hashPassword(Yii::app()->params['admin']['password']),
-            'Email' => 'm.cingolani@ggfgroup.it',
+            'Email' => Yii::app()->params['admin']['email'],
             'Enabled' => 1,
         ));
         # logins 

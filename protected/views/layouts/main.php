@@ -101,7 +101,7 @@
                 <?php echo $content; ?>
             </div><!-- content -->
 
-            <?php if (false && !Yii::app()->user->isGuest && Yii::app()->controller->id == 'companies') : ?>
+            <?php if (!Yii::app()->user->isGuest && Yii::app()->controller->id == 'companies') : ?>
 
                 <?php $lasts = Yii::app()->user->user->lastCompanies; ?>
                 <?php if (count($lasts) > 0) : ?>

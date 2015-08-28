@@ -64,6 +64,12 @@
                             'active' => Yii::app()->controller->id == 'campaigns',
                         ),
                         array(
+                            'label' => 'Reports',
+                            'url' => array('/reports'),
+                            'visible' => !Yii::app()->user->isGuest && Yii::app()->user->isSupervisor(),
+                            'active' => Yii::app()->controller->id == 'reports',
+                        ),
+                        array(
                             'label' => 'Login',
                             'url' => array('/login'),
                             'visible' => Yii::app()->user->isGuest,

@@ -34,6 +34,12 @@ class Campaign extends AbstractDatabaseObject {
         );
     }
 
+    public function behaviors() {
+        return array(
+            'CampaignReports' => array('class' => 'application.extensions.behaviors.CampaignReports'),
+        );
+    }
+
     public function relations() {
         return array(
             'Users' => array(self::HAS_MANY, 'UserCampaign', 'CampaignID', 'with' => 'User', 'together' => false, 'order' => 'UserName'),
@@ -106,29 +112,29 @@ class Campaign extends AbstractDatabaseObject {
     }
 
     public function getStatistiche() {
-        # totali
+# totali
         $command = Yii::app()->db->createCommand("SELECT COUNT(*) AS N FROM campaigns_companies WHERE CampaignID=$this->CampaignID");
         $data['totali'] = (int) $command->queryScalar();
-        # da gestire
+# da gestire
         $command = Yii::app()->db->createCommand(
                 "SELECT COUNT(*) AS N FROM campaigns_companies cc WHERE CampaignID=$this->CampaignID " .
                 "AND NOT EXISTS (SELECT * FROM activities WHERE CampaignID=cc.CampaignID AND CompanyID=cc.CompanyID)");
         $data['dagestire'] = (int) $command->queryScalar();
-        # chiusi
+# chiusi
         $command = Yii::app()->db->createCommand(
                 "SELECT COUNT(*) AS N FROM campaigns_companies cc WHERE CampaignID=$this->CampaignID " .
                 "AND EXISTS (SELECT * FROM activities " .
                 "JOIN activity_types USING(ActivityTypeID) " .
                 "WHERE CampaignID=cc.CampaignID AND CompanyID=cc.CompanyID AND Category IN ('C','S'))");
         $data['chiusi'] = (int) $command->queryScalar();
-        # successi
+# successi
         $command = Yii::app()->db->createCommand(
                 "SELECT COUNT(*) AS N FROM campaigns_companies cc WHERE CampaignID=$this->CampaignID " .
                 "AND EXISTS (SELECT * FROM activities " .
                 "JOIN activity_types USING(ActivityTypeID) " .
                 "WHERE CampaignID=cc.CampaignID AND CompanyID=cc.CompanyID AND Category='S')");
         $data['successi'] = (int) $command->queryScalar();
-        # successi
+# successi
         $command = Yii::app()->db->createCommand(
                 "SELECT COUNT(*) AS N FROM campaigns_companies cc WHERE CampaignID=$this->CampaignID " .
                 "AND EXISTS (SELECT * FROM activities " .
@@ -138,7 +144,7 @@ class Campaign extends AbstractDatabaseObject {
                 "JOIN activity_types USING(ActivityTypeID) " .
                 "WHERE CampaignID=cc.CampaignID AND CompanyID=cc.CompanyID AND Category<>'R')");
         $data['richiami'] = (int) $command->queryScalar();
-        # percentuali
+# percentuali
         $data['dagestireperc'] = $data['totali'] > 0 ? sprintf("%.1f%%", $data['dagestire'] / $data['totali'] * 100) : '0.0%'; # da gestiere su totali
         $data['chiusiperc'] = $data['totali'] - $data['dagestire'] > 0 ? sprintf("%.1f%%", $data['chiusi'] / ($data['totali'] - $data['dagestire']) * 100) : '0.0%'; # chiusi su lavorati (totali - dagestire)
         $data['successiperc'] = $data['chiusi'] > 0 ? sprintf("%.1f%%", $data['successi'] / $data['chiusi'] * 100) : '0.0%'; # successi su chiusi 
@@ -228,6 +234,16 @@ class Campaign extends AbstractDatabaseObject {
             endif;
         endforeach;
         return $scripts;
+    }
+
+    public static function ReportCampaign(array $parameters) {
+        $startdate = $parameters['startdate'];
+        $enddate = $parameters['enddate'];
+        # campagna
+        $campaign = Campaign::model()->
+                with('CampaignCompanies', 'CampaignCompanies.Addresses', 'CampaignCompanies.Contacts', 'CampaignCompanies.Phones', 'CampaignCompanies.Emails', 'CampaignCompanies.Addresses.Provincia', 'CampaignCompanies.Addresses.Regione', 'CampaignCompanies.Addresses.Nazione', 'CampaignCompanies.Activities', 'CampaignCompanies.Activities.ActivityType')->
+                findByPk((int) $parameters['campaignid']);
+        return $campaign->createXlsxReport($campaign, $startdate, $enddate); # metodo definito nel behavior CampaignReports
     }
 
     /* Ajax */

@@ -144,6 +144,17 @@ class Company extends AbstractDatabaseObject {
         return $data;
     }
 
+    public function getFieldsValuesForXlsx() {
+        return array(
+            $this->CompanyID,
+            $this->CompanyName,
+            $this->CompanyLegalName,
+            $this->CompanyGroup,
+            $this->CompanyCode,
+            $this->Notes,
+        );
+    }
+
     public function search() {
         $criteria = new CDbCriteria;
         $criteria->with = array('Addresses', 'Phones', 'Emails');
@@ -162,5 +173,17 @@ class Company extends AbstractDatabaseObject {
     }
 
     /* Metodi statici */
+
+    public static function GetFieldsLabelsForXlsx() {
+        return array(
+            'CompanyID',
+            'Ragione Sociale',
+            'Forma giuridica',
+            'Gruppo',
+            'Codice',
+            'Note',
+        );
+    }
+
     /* Ajax */
 }

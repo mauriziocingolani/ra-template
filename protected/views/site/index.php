@@ -21,10 +21,9 @@
     <?php if (Yii::app()->user->isSupervisor()) : ?>
 
         <hr />
+        <p>Queste funzioni sono riservate agli utenti della tua classe:</p>
 
         <h3>Utility</h3>
-
-        <p>Queste funzioni sono riservate agli utenti della tua classe:</p>
         <ul>
             <?php if (Yii::app()->user->isDeveloper()) : ?>
                 <li>... per Developer ...</li>
@@ -32,7 +31,10 @@
             <li>...</li>
             <li>... per Supervisor ...</li>
             <li>... per Supervisor ...</li>
-            <li>... per Supervisor ...</li>
+        </ul>
+        <h3>Reports</h3>
+        <ul>
+            <li><?= Html::link('Report campagne', '/reports/report-campagne'); ?></li>
         </ul>
 
     <?php endif; ?>

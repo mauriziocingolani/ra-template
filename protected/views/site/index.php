@@ -26,12 +26,14 @@
         <h3>Utility</h3>
         <ul>
             <?php if (Yii::app()->user->isDeveloper()) : ?>
+                <li><?= Html::link('Pulizia db', '/utility/pulizia-db'); ?></li>
                 <li>... per Developer ...</li>
             <?php endif; ?>
             <li>...</li>
             <li>... per Supervisor ...</li>
             <li>... per Supervisor ...</li>
         </ul>
+        
         <h3>Reports</h3>
         <ul>
             <li><?= Html::link('Report campagne', '/reports/report-campagne'); ?></li>

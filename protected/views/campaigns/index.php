@@ -55,6 +55,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'value' => '$data->statistiche[\'avanzamentoperc\']'
         ),
         array(
+            'header' => 'Operatori',
+            'value' => 'Html::JoinFromModels($data->Users,"UserName","<br />","User")',
+            'type' => 'raw',
+            'filter' => Html::activeTextField($model->searchUser, 'UserName'),
+        ),
+        array(
             'class' => 'CButtonColumn',
             'template' => '{update} {delete}',
             'deleteConfirmation' => 'Sei sicuro di voler eliminare questa campagna?',

@@ -17,6 +17,7 @@
  */
 class Campaign extends AbstractDatabaseObject {
 
+    public $searchUser; # campo di ricerca operatori
     private $_users; # lista id degli utenti assegnati
     private $_script;
     private static $_scripts;
@@ -154,6 +155,8 @@ class Campaign extends AbstractDatabaseObject {
 
     public function search() {
         $criteria = new CDbCriteria;
+        $criteria->with = array('Users');
+        $criteria->together = true;
         $criteria->compare('CampaignID', $this->CampaignID, true);
         $criteria->compare('Name', $this->Name, true);
         $criteria->compare('ScriptTable', $this->ScriptTable, true);
@@ -161,7 +164,16 @@ class Campaign extends AbstractDatabaseObject {
         $criteria->compare('StartDate', $this->StartDate, true);
         $criteria->compare('EndDate', $this->EndDate, true);
         $criteria->compare('Notes', $this->Notes, true);
-        $criteria->with = 'Companies';
+//        $criteria->compare('UserName', $this->searchUser->UserName, true);
+        if ($this->searchUser->UserName) :
+            $criteria->addCondition('EXISTS (' .
+                    'SELECT * FROM users_campaigns ' .
+                    'JOIN users USING(UserID) ' .
+                    'WHERE CampaignID=t.CampaignID ' .
+                    'AND UserName LIKE (:user) ' .
+                    ')');
+            $criteria->params = array(':user' => '%' . $this->searchUser->UserName . '%');
+        endif;
         $criteria->order = 'StartDate DESC';
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

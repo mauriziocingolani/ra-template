@@ -12,9 +12,14 @@ class CampaignsController extends TemplateController {
 
     public function actionIndex() {
         $model = new Campaign('search');
+        $user = new User('search');
         $model->unsetAttributes();
+        $user->unsetAttributes();
         if (isset($_GET['Campaign']))
             $model->attributes = $_GET['Campaign'];
+        if (isset($_GET['User']))
+            $user->attributes = $_GET['User'];
+        $model->searchUser = $user;
         $this->render('index', array(
             'model' => $model,
         ));

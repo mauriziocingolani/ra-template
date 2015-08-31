@@ -48,21 +48,6 @@ class UserCampaign extends CActiveRecord {
     }
 
     public function getRecallCompanies() {
-//        SELECT RecallDateTime FROM activities a
-//        WHERE CampaignID = 2
-//        AND NOT EXISTS (
-//        
-//         = 2
-//        
-//        AND ActivityTypeID<>1
-//        )
-//        AND RecallDateTime = (
-//        
-//        WHERE CampaignID = 2
-//        AND CompanyID = a.CompanyID
-//        AND ActivityTypeID = 1
-//        )
-//        ORDER BY 
         return Activity::model()->findAll(array(
                     'condition' => 'CampaignID=:campaignid AND NOT EXISTS (' .
                     'SELECT * FROM activities WHERE CampaignID=:campaignid AND CompanyID = t.CompanyID AND ActivityTypeID<>1)' .

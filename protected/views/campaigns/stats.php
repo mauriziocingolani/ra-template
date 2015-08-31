@@ -24,6 +24,7 @@ $this->crumbs = Array(
             <thead>
                 <tr>
                     <th>Campagna</th>
+                    <th>Operatori</th>
                     <th>Nominativi</th>
                     <th>De gestire</th>
                     <th>Richiami</th>
@@ -39,6 +40,7 @@ $this->crumbs = Array(
                     ?>
                     <tr class="<?php echo ($i++) % 2 == 0 ? 'even' : 'odd'; ?>">
                         <td><?php echo $d['campaign']->Name; ?></td>
+                        <td><small><?php echo Html::JoinFromModels($d['campaign']->Users, 'UserName', '<br />', 'User'); ?></small></td>
                         <td style="text-align: center;"><?php echo $d['stats']['totali']; ?></td>
                         <td style="text-align: center;">
                             <?php echo $d['stats']['dagestire']; ?>

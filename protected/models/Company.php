@@ -60,8 +60,7 @@ class Company extends AbstractDatabaseObject {
     public function rules() {
         return array(
             array('CompanyName', 'required', 'message' => 'Inserisci la ragione sociale'),
-            array('CompanyCode', 'numerical', 'min' => 1, 'tooSmall' => 'Il codice non pu&ograve; essere minore o uguale a zero'),
-            array('CompanyID, CompanyLegalName, CompanyGroup, Notes', 'safe'),
+            array('CompanyID, CompanyLegalName, CompanyGroup, CompanyCode, Notes', 'safe'),
         );
     }
 

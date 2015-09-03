@@ -122,7 +122,6 @@
 
             <!-- FOOTER -->
             <div id="footer">
-                Copyright &copy; <?php echo Yii::app()->params['year']; ?> by GGF Group<br/>
                 <p>
                     sviluppo web: <?php echo CHtml::link('Maurizio Cingolani', 'http://www.mauriziocingolani.it', array('target' => 'blank')); ?>
                     &CenterDot;
@@ -137,6 +136,8 @@
                         (PHP: <?php echo PHP_VERSION; ?>)
                     </small>
                 <?php endif; ?>
+                <br />
+                <?php echo Html::link('Licenza', array('/licenza')); ?>
             </div>
 
         </div><!-- page -->

@@ -25,4 +25,12 @@ class SiteController extends TemplateController {
         }
     }
 
+    public function actionLicenza() {
+        $this->render('license/it');
+    }
+
+    public function actionLicense() {
+        $this->render('license/en');
+    }
+
 }

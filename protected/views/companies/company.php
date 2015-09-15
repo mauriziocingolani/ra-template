@@ -4,10 +4,9 @@
 /* @var $campaignCompany CampaignCompany */
 /* @var $campaigns Campaign[] */
 $this->pageTitle = $model->isNewRecord ? 'Nuova azienda' : 'Modifica azienda';
-$this->crumbs = array(
-    'Aziende' => array('/aziende'),
-    $this->pageTitle,
-);
+$this->
+        addBreadcrumb('Aziende', '/aziende')->
+        addBreadcrumb($this->pageTitle);
 Yii::app()->clientScript->registerCoreScript('jquery');
 ?>
 

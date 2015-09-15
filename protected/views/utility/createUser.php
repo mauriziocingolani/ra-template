@@ -3,10 +3,9 @@
 /* @var $model User */
 /* @var $form CActiveForm */
 $this->pageTitle = 'Creazione utente';
-$this->crumbs = array(
-    'Utility',
-    $this->pageTitle,
-);
+$this->
+        addBreadcrumb('Utility')->
+        addBreadcrumb($this->pageTitle);
 ?>
 
 <h1>Creazione utente</h1>

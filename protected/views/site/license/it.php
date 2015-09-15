@@ -2,9 +2,7 @@
 /* @var $this SiteController */
 
 $this->pageTitle = 'Licenza';
-$this->crumbs = array(
-    $this->pageTitle,
-);
+$this->addBreadcrumb($this->pageTitle);
 $copyright = isset(Yii::app()->params['app']['copyrightUrl']) ?
         Html::link(Yii::app()->params['app']['copyright'], Yii::app()->params['app']['copyrightUrl'], array('target' => 'blank')) :
         Yii::app()->params['app']['copyright'];

@@ -88,13 +88,10 @@
             </div>
 
             <!-- BREADCRUMBS -->
-            <?php if (isset($this->crumbs)): ?>
-                <?php
-                $this->widget('zii.widgets.CBreadcrumbs', array(
-                    'links' => $this->crumbs,
-                ));
-                ?><!-- breadcrumbs -->
-            <?php endif ?>
+            <?php
+            if (isset($this->breadcrumbs))
+                $this->widget('zii.widgets.CBreadcrumbs', array('links' => $this->breadcrumbs));
+            ?>
 
             <!-- CONTENUTO PRINCIPALE -->
             <div id="content">

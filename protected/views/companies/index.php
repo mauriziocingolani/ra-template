@@ -2,9 +2,7 @@
 /* @var $this CompaniesController */
 /* @var $companies Company[] */
 $this->pageTitle = 'Aziende';
-$this->crumbs = array(
-    $this->pageTitle,
-);
+$this->addBreadcrumb($this->pageTitle);
 Yii::app()->clientScript->registerScript('search', "
 $('.search-button').click(function(){
 	$('.search-form').toggle();

@@ -1,10 +1,8 @@
 <?php
 /* @var $this CampaignsController */
 $this->pageTitle = 'Statistiche campagne';
-$this->crumbs = Array(
-    'Campagne' => array('/campagne'),
-    $this->pageTitle,
-);
+$this->addBreadcrumb('Campagne', array('/campagne'))->
+        addBreadcrumb($this->pageTitle);
 ?>
 
 <h1>Statistiche campagne</h1>

@@ -6,11 +6,10 @@
 /* @var $campaignName string */
 /* @var $activity Activity */
 $this->pageTitle = 'Profilazione';
-$this->crumbs = array(
-    'Aziende' => array('/aziende'),
-    "Azienda {$model->CompanyName}" => "/azienda/{$model->CompanyID}",
-    $this->pageTitle,
-);
+$this->
+        addBreadcrumb('Aziende', '/aziende')->
+        addBreadcrumb("Azienda {$model->CompanyName}", "/azienda/{$model->CompanyID}")->
+        addBreadcrumb($this->pageTitle);
 Yii::app()->clientScript->registerCoreScript('jquery');
 ?>
 

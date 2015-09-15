@@ -2,10 +2,9 @@
 /* @var $this UtilityController */
 /* @var $model UtilityCleanDbForm */
 $this->pageTitle = 'Pulizia db';
-$this->crumbs = array(
-    'Utility',
-    $this->pageTitle,
-);
+$this->
+        addBreadcrumb('Utility')->
+        addBreadcrumb($this->pageTitle);
 ?>
 
 <h1>Pulizia Db</h1>

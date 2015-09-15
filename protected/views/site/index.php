@@ -34,7 +34,7 @@
             <li>... per Supervisor ...</li>
             <li>... per Supervisor ...</li>
         </ul>
-        
+
         <h3>Reports</h3>
         <ul>
             <li><?= Html::link('Report campagne', '/reports/report-campagne'); ?></li>

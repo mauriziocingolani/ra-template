@@ -1,10 +1,9 @@
 <?php
 /* @var $this ReportsController */
 $this->pageTitle = 'Report campagne';
-$this->crumbs = array(
-    'Reports' => '/reports',
-    $this->pageTitle,
-);
+$this->
+        addBreadcrumb('Reports', '/reports')->
+        addBreadcrumb($this->pageTitle);
 ?>
 
 <h1>Report campagne</h1>

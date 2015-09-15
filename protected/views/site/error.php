@@ -3,9 +3,7 @@
 /* @var $error array */
 
 $this->pageTitle = 'ERRORE';
-$this->crumbs = array(
-    $this->pageTitle,
-);
+$this->addBreadcrumb($this->pageTitle);
 ?>
 
 <h2>Errore <?php echo $code; ?></h2>

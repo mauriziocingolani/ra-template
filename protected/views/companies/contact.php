@@ -3,11 +3,10 @@
 /* @var $company Company */
 /* @var $model CompanyContact */
 /* @var $form CActiveForm */
-$this->crumbs = array(
-    'Aziende' => '/aziende',
-    "Azienda {$company->CompanyName}" => "/azienda/{$company->CompanyID}",
-    $model->isNewRecord ? 'Nuovo indirizzo' : 'Modifica indirizzo',
-);
+$this->
+        addBreadcrumb('Aziende', '/aziende')->
+        addBreadcrumb("Azienda {$company->CompanyName}", "/azienda/{$company->CompanyID}")->
+        addBreadcrumb($model->isNewRecord ? 'Nuovo contatto' : 'Modifica contatto');
 Yii::app()->clientScript->registerCoreScript('jquery');
 ?>
 

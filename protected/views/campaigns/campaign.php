@@ -4,10 +4,9 @@
 /* @var $form CActiveForm */
 /* @var $operators User[] */
 $this->pageTitle = $model->isNewRecord ? 'Nuova campagna' : 'Modifica campagna';
-$this->crumbs = Array(
-    'Campagne' => array('/campagne'),
-    $this->pageTitle,
-);
+$this->
+        addBreadcrumb('Campagne', array('/campagne'))->
+        addBreadcrumb($this->pageTitle);
 ?>
 
 <table>

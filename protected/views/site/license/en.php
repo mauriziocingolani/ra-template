@@ -54,5 +54,5 @@ $copyright = isset(Yii::app()->params['app']['copyrightUrl']) ?
 </div>
 
 <p>
-    <?= Html::link('Italiano', array('/licenza'), array('class' => 'btn btn-default')); ?>
+    <?php echo Html::link('Italiano', array('/licenza'), array('class' => 'btn btn-default')); ?>
 </p>

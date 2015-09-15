@@ -122,6 +122,7 @@
 
             <!-- FOOTER -->
             <div id="footer">
+                <strong><?php echo Yii::app()->name; ?></strong> - &copy;<?php echo Yii::app()->params['app']['year']; ?> - <?php echo Html::link('Licenza', array('/licenza')); ?>
                 <p>
                     sviluppo web: <?php echo CHtml::link('Maurizio Cingolani', 'http://www.mauriziocingolani.it', array('target' => 'blank')); ?>
                     &CenterDot;
@@ -136,8 +137,6 @@
                         (PHP: <?php echo PHP_VERSION; ?>)
                     </small>
                 <?php endif; ?>
-                <br />
-                <?php echo Html::link('Licenza', array('/licenza')); ?>
             </div>
 
         </div><!-- page -->

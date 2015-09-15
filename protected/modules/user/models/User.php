@@ -8,6 +8,7 @@
  * @property string $LastName
  * @property string $Gender
  * @property string $Password
+ * @property string $NewPassword
  * @property string $Email
  * @property integer $Enabled
  * 
@@ -42,6 +43,7 @@ class User extends AbstractUserObject {
             array('UserName, FirstName, LastName', 'required', 'message' => 'Campo obbligatorio'),
             array('Email', 'email', 'message' => 'Indirizzo email non valido'),
             array('RoleID, Gender', 'safe'),
+            array('NewPassword', 'default'),
         );
     }
 
@@ -135,6 +137,17 @@ class User extends AbstractUserObject {
         return false;
     }
 
+    public function resetPassword() {
+        try {
+            $this->Password = $this->NewPassword;
+            $this->NewPassword = null;
+            $this->save();
+            return false;
+        } catch (CDbException $e) {
+            return $e->getMessage();
+        }
+    }
+
     public function saveModel() {
         if ($this->validate()) {
             try {
@@ -166,11 +179,18 @@ class User extends AbstractUserObject {
 
     /* Metodi statici */
 
-    public static function GetUserByUsername($username) {
-        return self::model()->find(array(
-                    'condition' => 'UserName=:username',
-                    'params' => array(':username' => $username),
-        ));
+    public static function FindUserByKey($key) {
+        # la key è generata dal metodo sendInstructions() di ForgottenPasswordForm
+        return self::model()->find('NewPassword IS NOT NULL AND SHA1(CONCAT(UserID,NewPassword))=:key', array(':key' => $key));
+    }
+
+    public static function GetUserByUsername($username, $email = false) {
+        $criteria = new CDbCriteria;
+        $criteria->addCondition('UserName=:username');
+        $criteria->params = array(':username' => $username);
+        if ($email)
+            $criteria->addCondition('Email=:username', 'OR');
+        return self::model()->find($criteria);
     }
 
     public static function GetOperatori() {

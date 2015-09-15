@@ -1,10 +1,9 @@
 <?php
-/* @var $this SiteController */
+/* @var $this UserController */
 /* @var $model LoginForm */
 /* @var $form CActiveForm  */
 
 $this->pageTitle = Yii::app()->name . ' - Login';
-$this->addBreadcrumb('Login');
 ?>
 
 <h1>Login</h1>
@@ -33,6 +32,10 @@ $this->addBreadcrumb('Login');
         <?php echo $form->passwordField($model, 'password'); ?>
         <?php echo $form->error($model, 'password'); ?>
     </div>
+
+    <p>
+        <?php echo Html::link('Password dimenticata?', array('/password-dimenticata'), array('style' => 'font-size: smaller;')); ?>
+    </p>
 
     <div class="row buttons">
         <?php echo CHtml::submitButton('Login'); ?>

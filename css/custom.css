@@ -86,6 +86,9 @@ a.tab link:hover {
     margin-bottom: 5px;
     padding: 5px;
 }
+ul.operators {
+    list-style-type: none;
+}
 
 /* alert-info */
 .alert.alert-info {

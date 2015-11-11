@@ -78,14 +78,26 @@ $this->
 
         <?php $this->widget('widgets.FlashWidget', array('prefix' => 'operators')); ?>
 
+        <style>
+            ul.operators {
+                -webkit-column-count: 4; -webkit-column-gap:10px; 
+                -moz-column-count:4; -moz-column-gap:10px; 
+                -o-column-count:4; -o-column-gap:10px; 
+                column-count:4; column-gap:10px; 
+            }                
+        </style>
+
         <form id="CampaignOperators" action="/campagna/<?= $model->CampaignID; ?>" method="post">
             <input name="CampaignOperators[foo]" type="hidden" value="bar" />
-            <?php foreach ($operators as $op) : ?>
-                <input id="<?= $op->UserID; ?>_op_cb" name="CampaignOperators[<?= $op->UserID; ?>]" type="checkbox" 
-                       <?php if ($model->hasUser($op->UserID)) echo 'checked'; ?>/>
-                <label for="<?= $op->UserID; ?>_op_cb"><?= Html::encode($op->UserName); ?></label>
-                <br />
-            <?php endforeach; ?>
+            <ul class="operators">
+                <?php foreach ($operators as $op) : ?>
+                    <li>
+                        <input id="<?= $op->UserID; ?>_op_cb" name="CampaignOperators[<?= $op->UserID; ?>]" type="checkbox" 
+                               <?php if ($model->hasUser($op->UserID)) echo 'checked'; ?>/>
+                        <label for="<?= $op->UserID; ?>_op_cb"><?= Html::encode($op->UserName); ?></label>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
             <div class="row buttons" style="margin-top: 15px;">
                 <?php echo CHtml::submitButton('Aggiorna lista operatori'); ?>
             </div>

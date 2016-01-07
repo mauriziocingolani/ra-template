@@ -4,7 +4,7 @@
 
 <?php if (Yii::app()->user->isGuest) : ?>
 
-    Per accedere alle funzionalit&agrave; del gestionale devi <?= Html::link('autenticarti', '/login'); ?>.
+    Per accedere alle funzionalit&agrave; del gestionale devi <?= Html::link('autenticarti', array('/login')); ?>.
 
     <div style="height: 250px;"></div>
 

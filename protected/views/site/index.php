@@ -26,8 +26,8 @@
         <h3>Utility</h3>
         <ul>
             <?php if (Yii::app()->user->isDeveloper()) : ?>
-                <li><?= Html::link('Pulizia db', '/utility/pulizia-db'); ?></li>
-                <li><?= Html::link('Creazione utente', '/utility/creazione-utente'); ?></li>
+                <li><?= Html::link('Pulizia db', array('/utility/pulizia-db')); ?></li>
+                <li><?= Html::link('Creazione utente', array('/utility/creazione-utente')); ?></li>
                 <li>... per Developer ...</li>
             <?php endif; ?>
             <li>...</li>
@@ -37,7 +37,7 @@
 
         <h3>Reports</h3>
         <ul>
-            <li><?= Html::link('Report campagne', '/reports/report-campagne'); ?></li>
+            <li><?= Html::link('Report campagne', array('/reports/report-campagne')); ?></li>
         </ul>
 
     <?php endif; ?>
@@ -77,7 +77,7 @@
                             <div style="border: 1px solid #c9e0da;font-size: 11px;max-height: 200px;overflow: auto;padding: 10px;">
                                 <ul>
                                     <?php foreach ($todo as $comp) : ?>
-                                        <li><?= Html::link($comp->CompanyName, "/azienda/{$comp->CompanyID}/profilazione/{$camp->CampaignID}"); ?></li>
+                                        <li><?= Html::link($comp->CompanyName, array("/azienda/{$comp->CompanyID}/profilazione/{$camp->CampaignID}")); ?></li>
                                     <?php endforeach; ?>
                                 </ul>
                             </div>
@@ -96,7 +96,7 @@
                                         <?php foreach ($recall as $act) : ?>
                                             <li>
                                                 <span style="font-weight: bold;<?php if ($act->RecallPrioritary) echo 'background: yellow;'; ?>"><?= date('d-m-Y H:i', strtotime($act->RecallDateTime)); ?></span>
-                                                <?= Html::link($act->Company->CompanyName, "/azienda/{$act->CompanyID}/profilazione/{$camp->CampaignID}"); ?>
+                                                <?= Html::link($act->Company->CompanyName, array("/azienda/{$act->CompanyID}/profilazione/{$camp->CampaignID}")); ?>
                                             </li>
                                         <?php endforeach; ?>
                                     </ul>

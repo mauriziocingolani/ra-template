@@ -107,7 +107,7 @@
                         <h4>Ultime agenzie lavorate:</h4>
                         <ul style="font-size: 10px;">
                             <?php foreach ($lasts as $c) : ?>
-                                <li><?= Html::link($c->CompanyName, '/azienda/' . $c->CompanyID); ?></li>
+                                <li><?= Html::link($c->CompanyName, array('/azienda/' . $c->CompanyID)); ?></li>
                             <?php endforeach; ?>
                         </ul>
                     </div>

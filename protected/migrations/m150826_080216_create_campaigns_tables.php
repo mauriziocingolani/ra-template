@@ -92,12 +92,12 @@ class m150826_080216_create_campaigns_tables extends DbMigration {
     }
 
     public function safeDown() {
-        $this->dropTable('activity_types');
         $this->dropTable('activities');
-        $this->dropTable('campaigns');
+        $this->dropTable('activity_types');
         $this->dropTable('script_1a0f3f9_test');
         $this->dropTable('users_campaigns');
         $this->dropTable('campaigns_companies');
+        $this->dropTable('campaigns');
     }
 
 }

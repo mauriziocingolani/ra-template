@@ -36,7 +36,7 @@ class m150825_131022_create_province_tables extends DbMigration {
             'Province' => 'int(3) unsigned NOT NULL',
             self::Pk('RegioneID'),
             'UNIQUE KEY unique_regioni_regione (Regione)',
-                ), 'ENGINE=InnoDB CHARSET=latin1');
+                ), self::TableOptions());
         $this->addForeignKey('fk_regioni_area', 'regioni', 'AreaID', 'aree');
         $this->insertMultiple('regioni', array(
             array('RegioneID' => '1', 'AreaID' => '4', 'Regione' => 'Abruzzo', 'Residenti' => '1312507', 'ResidentiPerc' => '2.2', 'Superficie' => '10795', 'SuperficiePerc' => '3.6', 'Densita' => '121.6', 'Comuni' => '305', 'Province' => '4'),
@@ -74,7 +74,7 @@ class m150825_131022_create_province_tables extends DbMigration {
             self::Pk('ProvinciaID'),
             'UNIQUE KEY unique_province_provincia (Provincia)',
             'UNIQUE KEY unique_province_sigla (Sigla)',
-                ), 'ENGINE=InnoDB CHARSET=latin1');
+                ), self::TableOptions());
         $this->addForeignKey('fk_province_regione', 'province', 'RegioneID', 'regioni');
         $this->insertMultiple('province', array(
             array('ProvinciaID' => '1', 'RegioneID' => '15', 'Provincia' => 'Agrigento', 'Residenti' => '446081', 'ResidentiPerc' => '0.7', 'Superrficie' => '3042', 'Densita' => '146.6', 'Comuni' => '43', 'Sigla' => 'AG'),
@@ -196,7 +196,7 @@ class m150825_131022_create_province_tables extends DbMigration {
             self::Pk('NazioneID'),
             'UNIQUE KEY unique_nazioni_nazioneit (NazioneIt)',
             'UNIQUE KEY unique_nazioni_nazioneen (NazioneEn)',
-                ), '');
+                ), self::TableOptions());
         $this->insertMultiple('nazioni', array(
             array('NazioneID' => '1', 'NazioneIt' => 'Afghanistan', 'NazioneEn' => 'Afghanistan'),
             array('NazioneID' => '2', 'NazioneIt' => 'Albania', 'NazioneEn' => 'Albania'),

@@ -158,8 +158,8 @@ class User extends AbstractUserObject {
                 if ($this->save(false)) :
                     $message = new YiiMailMessage;
                     $message->view = 'account';
-                    $message->from = 'webmaster@remoteaccount.it';
-                    $message->subject = 'Remote Account Template - Account gestionale';
+                    $message->from = array(Yii::app()->params['webadmin'] => Yii::app()->name);
+                    $message->subject = Yii::app()->name . ' - Credenziali di acesso';
                     $message->setBody(array('username' => $this->UserName, 'password' => $password), 'text/html');
                     $message->setTo($this->Email ? $this->Email : Yii::app()->params['admin']['email']);
                     $message->setCc(Yii::app()->params['admin']['email']);

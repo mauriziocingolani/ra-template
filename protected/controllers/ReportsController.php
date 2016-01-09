@@ -21,7 +21,8 @@ class ReportsController extends TemplateController {
             if ($model->validate()) :
                 $result = Campaign::ReportCampaign($_POST['ReportsCampaignsForm']);
                 if ($result === true) :
-                    Yii::app()->user->setFlash('success', 'Report generato correttamente. Clicca <a href="/files/reports/report_campagna.xlsx" style="text-decoration: underline;">qui</a> per scaricare il file.');
+                    Yii::app()->user->setFlash('success', 'Report generato correttamente. Clicca <a href="' .
+                            Yii::app()->createUrl('/files/reports/report_campagna.xlsx') . '" style="text-decoration: underline;">qui</a> per scaricare il file.');
                 else :
                     Yii::app()->user->setFlash('error', 'Impossibile generare il report.' . (YII_DEBUG ? ' Il server riporta: <p>' . $result . '</p>' : ''));
                 endif;

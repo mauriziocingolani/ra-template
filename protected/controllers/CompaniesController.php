@@ -47,7 +47,7 @@ class CompaniesController extends TemplateController {
                         if ($companyid) :
                             $this->refresh();
                         else :
-                            $this->redirect('/azienda/' . Yii::app()->db->lastInsertID);
+                            $this->redirect(Yii::app()->baseUrl . '/azienda/' . Yii::app()->db->lastInsertID);
                         endif;
                     endif;
                 } catch (CDbException $e) {
@@ -139,7 +139,7 @@ class CompaniesController extends TemplateController {
                     if ($addressid) :
                         $this->refresh();
                     else :
-                        $this->redirect('/azienda/' . $companyid . '/indirizzo/' . Yii::app()->db->lastInsertID);
+                        $this->redirect(Yii::app()->baseUrl . '/azienda/' . $companyid . '/indirizzo/' . Yii::app()->db->lastInsertID);
                     endif;
                 endif;
             } catch (CDbException $e) {
@@ -174,7 +174,7 @@ class CompaniesController extends TemplateController {
                     if ($contactid) :
                         $this->refresh();
                     else :
-                        $this->redirect('/azienda/' . $companyid . '/contatto/' . Yii::app()->db->lastInsertID);
+                        $this->redirect(Yii::app()->baseUrl . '/azienda/' . $companyid . '/contatto/' . Yii::app()->db->lastInsertID);
                     endif;
                 endif;
             } catch (CDbException $e) {
@@ -206,7 +206,7 @@ class CompaniesController extends TemplateController {
                     if (!$phoneid) :
                         $this->refresh();
                     else :
-                        $this->redirect('/azienda/' . $companyid . '/telefono/' . Yii::app()->db->lastInsertID);
+                        $this->redirect(Yii::app()->baseUrl . '/azienda/' . $companyid . '/telefono/' . Yii::app()->db->lastInsertID);
                     endif;
                 endif;
             } catch (CDbException $e) {
@@ -238,7 +238,7 @@ class CompaniesController extends TemplateController {
                     if (!$emailid) :
                         $this->refresh();
                     else :
-                        $this->redirect('/azienda/' . $companyid . '/email/' . Yii::app()->db->lastInsertID);
+                        $this->redirect(Yii::app()->baseUrl . '/azienda/' . $companyid . '/email/' . Yii::app()->db->lastInsertID);
                     endif;
                 endif;
             } catch (CDbException $e) {
@@ -279,10 +279,10 @@ class CompaniesController extends TemplateController {
         if (count($campaigns) > 0) :
             if (!$campaignid) : # nessuna campagna impostata
                 if (isset(Yii::app()->session['lastCampaign'][$companyid])) : # campaignid in memoria
-                    return $this->redirect("/azienda/$companyid/profilazione/" . Yii::app()->session['lastCampaign'][$companyid]);
+                    return $this->redirect(Yii::app()->baseUrl . "/azienda/$companyid/profilazione/" . Yii::app()->session['lastCampaign'][$companyid]);
                 else :
                     Yii::app()->session['lastCampaign'] = array($companyid => $campaigns[0]->CampaignID);
-                    return $this->redirect("/azienda/$companyid/profilazione/{$campaigns[0]->CampaignID}");
+                    return $this->redirect(Yii::app()->baseUrl . "/azienda/$companyid/profilazione/{$campaigns[0]->CampaignID}");
                 endif;
             else : # campagna impostata
                 $found = false;
@@ -297,7 +297,7 @@ class CompaniesController extends TemplateController {
                     Yii::app()->session['lastCampaign'] = array($companyid => $campaignid);
                 else :
                     # seleziono la prossima campagna (se c'è) e ridirigo
-                    $this->redirect("/azienda/$companyid/profilazione" . (count($campaigns) > 0 ? '/' . $campaigns[0]->CampaignID : ''));
+                    $this->redirect(Yii::app()->baseUrl . "/azienda/$companyid/profilazione" . (count($campaigns) > 0 ? '/' . $campaigns[0]->CampaignID : ''));
                 endif;
             endif;
             $activity = new Activity;
@@ -315,7 +315,7 @@ class CompaniesController extends TemplateController {
             # se non ho più campagne ma sto cercando di profilarne una ridirigo
             # alla pagina generica (senza campagne)
             if ($campaignid)
-                $this->redirect("/azienda/$companyid/profilazione");
+                $this->redirect(Yii::app()->baseUrl . "/azienda/$companyid/profilazione");
         endif;
         # POST
         if (Yii::app()->request->isPostRequest) :

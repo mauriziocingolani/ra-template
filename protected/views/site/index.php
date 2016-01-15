@@ -140,9 +140,9 @@
                 <div class="tweet" style="max-width: 400px;">
                     <header style="text-align: left;">
                         <i class="fa fa-twitter"></i>
-                        <span><?= date('d-m-Y', strtotime($tweet->created_at)); ?></span>
+                        <span><?= date('d-m-Y', strtotime($tweet->created)); ?></span>
                     </header>
-                    <p><?= Twitter::GetTweetText($tweet); ?></p>
+                    <p><?= $tweet->text; ?></p>
                 </div>  
             <?php endforeach; ?>
         </div>

@@ -7,8 +7,8 @@
 /* @var $activity Activity */
 $this->pageTitle = 'Profilazione';
 $this->
-        addBreadcrumb('Aziende', '/aziende')->
-        addBreadcrumb("Azienda {$model->CompanyName}", "/azienda/{$model->CompanyID}")->
+        addBreadcrumb('Aziende', array('/aziende'))->
+        addBreadcrumb("Azienda {$model->CompanyName}", array("/azienda/{$model->CompanyID}"))->
         addBreadcrumb($this->pageTitle);
 Yii::app()->clientScript->registerCoreScript('jquery');
 ?>

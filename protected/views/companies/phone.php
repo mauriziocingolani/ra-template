@@ -5,8 +5,8 @@
 /* @var $form CActiveForm */
 $this->pageTitle = $model->isNewRecord ? 'Nuovo telefono' : 'Modifica telefono';
 $this->
-        addBreadcrumb('Aziende', '/aziende')->
-        addBreadcrumb("Azienda {$company->CompanyName}", "/azienda/{$company->CompanyID}")->
+        addBreadcrumb('Aziende', array('/aziende'))->
+        addBreadcrumb("Azienda {$company->CompanyName}", array("/azienda/{$company->CompanyID}"))->
         addBreadcrumb($this->pageTitle);
 Yii::app()->clientScript->registerCoreScript('jquery');
 ?>

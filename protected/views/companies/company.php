@@ -5,7 +5,7 @@
 /* @var $campaigns Campaign[] */
 $this->pageTitle = $model->isNewRecord ? 'Nuova azienda' : 'Modifica azienda';
 $this->
-        addBreadcrumb('Aziende', '/aziende')->
+        addBreadcrumb('Aziende', array('/aziende'))->
         addBreadcrumb($this->pageTitle);
 Yii::app()->clientScript->registerCoreScript('jquery');
 ?>

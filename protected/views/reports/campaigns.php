@@ -2,7 +2,7 @@
 /* @var $this ReportsController */
 $this->pageTitle = 'Report campagne';
 $this->
-        addBreadcrumb('Reports', '/reports')->
+        addBreadcrumb('Reports', array('/reports'))->
         addBreadcrumb($this->pageTitle);
 ?>
 

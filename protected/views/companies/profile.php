@@ -73,7 +73,9 @@ Yii::app()->clientScript->registerCoreScript('jquery');
                             <?php $this->renderPartial('scripts/_' . get_class($profileModel), array('model' => $profileModel)); ?>
                         </div>
                     <?php else : ?>
-                        <em>Questa agenzia non &egrave; associata a nessuna delle tue campagne, quindi non pu&ograve; essere profilata.</em>
+                        <em>Questa agenzia non &egrave; associata a nessuna delle tue campagne, 
+                            oppure &egrave; stata profilata e chiusa, 
+                            quindi non pu&ograve; essere profilata.</em>
                     <?php endif; ?>
                 </div>
             </div>
@@ -93,7 +95,9 @@ Yii::app()->clientScript->registerCoreScript('jquery');
                     <?php if ($campaignid) : ?>
                         <?php $this->renderPartial('forms/_activity_form', array('company' => $model, 'activity' => $activity, 'campaignid' => $campaignid)); ?>
                     <?php else : ?>
-                        <em>Questa agenzia non &egrave; associata a nessuna delle tue campagne, quindi non &egrave; possibile registrare attivit&agrave;.</em>
+                        <em>Questa agenzia non &egrave; associata a nessuna delle tue campagne, 
+                            oppure &egrave; stata profilata e chiusa, 
+                            quindi non &egrave; possibile registrare attivit&agrave;.</em>
                     <?php endif; ?>
                     <hr />
                     <h5>Storico attivit&agrave;</h5>

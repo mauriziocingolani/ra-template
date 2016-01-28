@@ -14,7 +14,7 @@ $this->
         <?php echo Yii::app()->user->getFlash('success'); ?>
     </div>
 
-    <a href="/reports/report-campagne">Nuova esportazione</a>
+    <a href="<?php echo Yii::app()->createUrl('/reports/report-campagne'); ?>">Nuova esportazione</a>
 
 <?php else : ?>
 

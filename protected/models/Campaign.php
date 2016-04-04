@@ -54,6 +54,7 @@ class Campaign extends AbstractDatabaseObject {
         return array(
             array('Name', 'required', 'message' => 'Inserisci il nome della campagna'),
             array('Name', 'length', 'max' => 25, 'tooLong' => 'Il nome non deve superare i 25 caratteri di lunghezza'),
+            array('ScriptTable', 'required', 'message' => 'Seleziona lo script per la campagna'),
             array('StartDate', 'required', 'message' => 'Inserisci la data di inizio'),
             array('EndDate', 'compare', 'compareAttribute' => 'StartDate', 'operator' => '>', 'allowEmpty' => true, 'message' => 'La data di fine deve essere successiva a quella di inizio'),
             array('CampaignID, ScriptTable,Notes', 'safe'),

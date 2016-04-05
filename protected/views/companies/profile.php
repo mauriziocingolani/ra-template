@@ -106,6 +106,15 @@ Yii::app()->clientScript->registerCoreScript('jquery');
 
                     <?php if (is_array($activities) && count($activities) > 0) : ?>
 
+                        <p>
+                            <small>
+                                <a href="" onclick="expandCollapseAll(true);return false;">Espandi</a>
+                                |
+                                <a href="" onclick="expandCollapseAll(false);return false;">Chiudi</a>
+                                tutte le attivit&agrave;
+                            </small>
+                        </p>
+
                         <?php foreach ($activities as $campaignid => $cData) : ?>
 
                             <!-- campagna -->
@@ -180,5 +189,18 @@ Yii::app()->clientScript->registerCoreScript('jquery');
             $('#' + activityid + '_activity_delete_form').submit();
         }
         return false;
+    }
+    function expandCollapseAll(expand) {
+        $('.expander').each(function (i, a) {
+            var id = $(a).attr('id').substring(0, $(a).attr('id').indexOf('_'));
+            var div = $('#' + id + '_details');
+            if (expand) {
+                $('#' + id + '_expander i').removeClass('fa-plus-square-o').addClass('fa-minus-square-o');
+                div.slideDown('fast');
+            } else {
+                $('#' + id + '_expander i').removeClass('fa-minus-square-o').addClass('fa-plus-square-o');
+                div.slideUp('fast');
+            }
+        });
     }
 </script>

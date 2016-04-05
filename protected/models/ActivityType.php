@@ -34,6 +34,10 @@ class ActivityType extends CActiveRecord {
         return $this->Category == 'S';
     }
 
+    public function getIsNota() {
+        return $this->Category == 'N';
+    }
+
     /* Metodi statici */
 
     public static function GetAll() {

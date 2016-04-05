@@ -42,6 +42,7 @@ class UserCampaign extends CActiveRecord {
                     'JOIN activity_types USING(ActivityTypeID) ' .
                     'WHERE CampaignID=cc.CampaignID ' .
                     'AND CompanyID=cc.CompanyID ' .
+                    "AND Category NOT IN ('N') " .
                     ')',
                     'params' => array(':campaignid' => $this->CampaignID),
         ));

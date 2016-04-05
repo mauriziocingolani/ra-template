@@ -101,7 +101,7 @@ class Company extends AbstractDatabaseObject {
                 'JOIN activity_types USING(ActivityTypeID) ' .
                 'WHERE CompanyID=t.CompanyID ' .
                 'AND CampaignID=t.CampaignID ' .
-                "AND Category<>'R'" .
+                "AND Category NOT IN ('R','N') " .
                 ')');
         $criteria->params = array(':companyid' => $this->CompanyID);
         if (!Yii::app()->user->isDeveloper()) :

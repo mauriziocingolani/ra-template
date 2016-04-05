@@ -57,7 +57,7 @@ class m150826_080216_create_campaigns_tables extends DbMigration {
         $this->createTable('activity_types', array(
             'ActivityTypeID' => self::Pk(),
             'Description' => self::TypeVarchar(255, true),
-            'Category' => "enum('R','C','S') NOT NULL",
+            'Category' => "enum('R','C','S','N') NOT NULL",
             'Ordering' => 'tinyint(3) NOT NULL',
             self::Pk('ActivityTypeID'),
                 ), self::TableOptions());
@@ -69,6 +69,7 @@ class m150826_080216_create_campaigns_tables extends DbMigration {
             array('ActivityTypeID' => '5', 'Description' => 'Insuccesso', 'Category' => 'C', 'Ordering' => 30),
             array('ActivityTypeID' => '6', 'Description' => 'Fuori target', 'Category' => 'C', 'Ordering' => 25),
             array('ActivityTypeID' => '7', 'Description' => 'Cessata attività', 'Category' => 'C', 'Ordering' => 20),
+            array('ActivityTypeID' => '8', 'Description' => 'Nota', 'Category' => 'N', 'Ordering' => 15),
         ));
         # activities
         $this->createTable('activities', array(

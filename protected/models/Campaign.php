@@ -136,7 +136,7 @@ class Campaign extends AbstractDatabaseObject {
                 "JOIN activity_types USING(ActivityTypeID) " .
                 "WHERE CampaignID=cc.CampaignID AND CompanyID=cc.CompanyID AND Category='S')");
         $data['successi'] = (int) $command->queryScalar();
-# successi
+# richiami
         $command = Yii::app()->db->createCommand(
                 "SELECT COUNT(*) AS N FROM campaigns_companies cc WHERE CampaignID=$this->CampaignID " .
                 "AND EXISTS (SELECT * FROM activities " .
@@ -144,7 +144,7 @@ class Campaign extends AbstractDatabaseObject {
                 "WHERE CampaignID=cc.CampaignID AND CompanyID=cc.CompanyID AND Category='R')" .
                 "AND NOT EXISTS (SELECT * FROM activities " .
                 "JOIN activity_types USING(ActivityTypeID) " .
-                "WHERE CampaignID=cc.CampaignID AND CompanyID=cc.CompanyID AND Category<>'R')");
+                "WHERE CampaignID=cc.CampaignID AND CompanyID=cc.CompanyID AND Category NOT IN ('R','N'))");
         $data['richiami'] = (int) $command->queryScalar();
 # percentuali
         $data['dagestireperc'] = $data['totali'] > 0 ? sprintf("%.1f%%", $data['dagestire'] / $data['totali'] * 100) : '0.0%'; # da gestiere su totali

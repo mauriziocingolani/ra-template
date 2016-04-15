@@ -87,7 +87,7 @@ $this->
             }                
         </style>
 
-        <form id="CampaignOperators" action="/campagna/<?= $model->CampaignID; ?>" method="post">
+        <form id="CampaignOperators" method="post">
             <input name="CampaignOperators[foo]" type="hidden" value="bar" />
             <ul class="operators">
                 <?php foreach ($operators as $op) : ?>

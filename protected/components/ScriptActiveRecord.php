@@ -30,11 +30,17 @@ abstract class ScriptActiveRecord extends AbstractDatabaseObject {
     abstract public static function GetFieldNames();
 
     /**
-     * Deve restituire un array con tante stringhe vuote quanti sono gli elementi dell'array
+     * Restituisce un array con tante stringhe vuote quanti sono gli elementi dell'array
      * restituito dal metodo {@link ScriptActiveRecord::GetFieldNames()}. L'array viene utilizzato
      * come placeholder durante l'export per le aziende che non sono state profilate.
      */
-    abstract public static function GetDummyFieldValues();
+    public static function GetDummyFieldValues() {
+        $a = array();
+        for ($i = 0, $n = count(self::GetFieldNames()); $i < $n; $i++) :
+            $a[] = '';
+        endfor;
+        return $a;
+    }
 
     public static function FindUnique(ScriptActiveRecord $model, $campaignid, $companyid) {
         return $model->with('Creator')->find(array(

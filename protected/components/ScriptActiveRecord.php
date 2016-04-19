@@ -36,7 +36,7 @@ abstract class ScriptActiveRecord extends AbstractDatabaseObject {
      */
     public static function GetDummyFieldValues() {
         $a = array();
-        for ($i = 0, $n = count(self::GetFieldNames()); $i < $n; $i++) :
+        for ($i = 0, $n = count(static::GetFieldNames()); $i < $n; $i++) :
             $a[] = '';
         endfor;
         return $a;

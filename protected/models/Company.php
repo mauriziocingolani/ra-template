@@ -96,15 +96,17 @@ class Company extends AbstractDatabaseObject {
     public function getActiveCampaigns() {
         $criteria = new CDbCriteria;
         $criteria->addCondition('CompanyID=:companyid');
-        $criteria->addCondition('NOT EXISTS (' .
-                'SELECT * FROM activities ' .
-                'JOIN activity_types USING(ActivityTypeID) ' .
-                'WHERE CompanyID=t.CompanyID ' .
-                'AND CampaignID=t.CampaignID ' .
-                "AND Category NOT IN ('R','N') " .
-                ')');
+        if (!Yii::app()->user->isDeveloper() && !Yii::app()->user->isSupervisor()) :
+            $criteria->addCondition('NOT EXISTS (' .
+                    'SELECT * FROM activities ' .
+                    'JOIN activity_types USING(ActivityTypeID) ' .
+                    'WHERE CompanyID=t.CompanyID ' .
+                    'AND CampaignID=t.CampaignID ' .
+                    "AND Category NOT IN ('R','N') " .
+                    ')');
+        endif;
         $criteria->params = array(':companyid' => $this->CompanyID);
-        if (!Yii::app()->user->isDeveloper()) :
+        if (!Yii::app()->user->isDeveloper() && !Yii::app()->user->isSupervisor()) :
             # per gli utenti normali limito le campagne attive a quelle assegnate loro
             $criteria->addCondition('EXISTS (' .
                     'SELECT * FROM users_campaigns ' .

@@ -132,6 +132,8 @@
                     <small>
                         Powered by <?php echo Html::link('Yii ' . Yii::getVersion(), 'http://www.yiiframework.com/doc/api/', array('target' => 'blank')); ?>
                         (PHP: <?php echo PHP_VERSION; ?>)
+                        <br />
+                        <?= Yii::app()->getRequest()->userHostAddress; ?>
                     </small>
                 <?php endif; ?>
             </div>

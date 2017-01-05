@@ -21,6 +21,8 @@
  */
 class User extends AbstractUserObject {
 
+    public $_Fake = false; # Impiegato per segnalare che l'utente attuale è un CED "mascherato"
+
     public function attributeLabels() {
         return array(
             'RoleID' => 'Ruolo',

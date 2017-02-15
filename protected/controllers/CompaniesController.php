@@ -366,7 +366,7 @@ class CompaniesController extends TemplateController {
     }
 
     private function _readCompany($companyid) {
-        $company = Company::model()->with('Campaigns')->findByPk($companyid);
+        $company = Company::model()->with('Creator', 'Updater', 'Campaigns', 'Phones', 'Emails', 'Addresses.Provincia', 'Addresses.Regione', 'Contacts')->findByPk($companyid);
         if ($company == null) :
             throw new InvalidDatabaseObjectException('L\'azienda', true);
         endif;

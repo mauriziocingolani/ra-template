@@ -99,3 +99,11 @@ ul.operators {
     margin-bottom: 20px;
     padding: 15px;
 }
+.alert.alert-danger {
+    background-color: #f2dede;
+    border: 1px solid #ebcccc;
+    border-radius: 4px;
+    color: #a94442;
+    margin-bottom: 20px;
+    padding: 15px;
+}

@@ -51,7 +51,7 @@ class UserCampaign extends CActiveRecord {
     public function getRecallCompanies() {
         return Activity::model()->findAll(array(
                     'condition' => 'CampaignID=:campaignid AND NOT EXISTS (' .
-                    'SELECT * FROM activities WHERE CampaignID=:campaignid AND CompanyID = t.CompanyID AND ActivityTypeID<>1)' .
+                    'SELECT * FROM activities WHERE CampaignID=:campaignid AND CompanyID = t.CompanyID AND ActivityTypeID NOT IN (1,8))' .
                     'AND RecallDateTime=(' .
                     'SELECT MAX(RecallDateTime) FROM activities WHERE CampaignID=:campaignid AND CompanyID = t.CompanyID AND ActivityTypeID = 1)',
                     'params' => array(':campaignid' => $this->CampaignID),

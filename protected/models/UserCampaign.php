@@ -35,28 +35,30 @@ class UserCampaign extends CActiveRecord {
     /* Metodi */
 
     public function getTodoCompanies() {
-        return Company::model()->findAll(array(
-                    'join' => 'INNER JOIN campaigns_companies cc USING(CompanyID)',
-                    'condition' => 'CampaignID=:campaignid AND NOT EXISTS (' .
-                    'SELECT * FROM activities ' .
-                    'JOIN activity_types USING(ActivityTypeID) ' .
-                    'WHERE CampaignID=cc.CampaignID ' .
-                    'AND CompanyID=cc.CompanyID ' .
-                    "AND Category NOT IN ('N') " .
-                    ')',
-                    'params' => array(':campaignid' => $this->CampaignID),
-        ));
+        $criteria = new CDbCriteria;
+        $criteria->with = array();
+        $criteria->join = 'INNER JOIN campaigns_companies cc USING(CompanyID)';
+        $criteria->addCondition('CampaignID=:campaignid');
+        $criteria->addCondition('NOT EXISTS (' .
+                'SELECT * FROM activities ' .
+                'JOIN activity_types USING(ActivityTypeID) ' .
+                'WHERE CampaignID=cc.CampaignID ' .
+                'AND CompanyID=cc.CompanyID ' .
+                "AND Category NOT IN ('N') " .
+                ')');
+        $criteria->params = array(':campaignid' => $this->CampaignID);
+        return Company::model()->findAll($criteria);
     }
 
     public function getRecallCompanies() {
-        return Activity::model()->findAll(array(
-                    'condition' => 'CampaignID=:campaignid AND NOT EXISTS (' .
-                    'SELECT * FROM activities WHERE CampaignID=:campaignid AND CompanyID = t.CompanyID AND ActivityTypeID NOT IN (1,8))' .
-                    'AND RecallDateTime=(' .
-                    'SELECT MAX(RecallDateTime) FROM activities WHERE CampaignID=:campaignid AND CompanyID = t.CompanyID AND ActivityTypeID = 1)',
-                    'params' => array(':campaignid' => $this->CampaignID),
-                    'order' => 'CASE WHEN RecallPrioritary = 1 AND RecallDateTime<NOW() THEN 0 ELSE 1 END, RecallDateTime',
-        ));
+        $criteria = new CDbCriteria;
+        $criteria->with = array('Creator', 'Company');
+        $criteria->addCondition('CampaignID=:campaignid');
+        $criteria->addCondition('NOT EXISTS (SELECT * FROM activities WHERE CampaignID=:campaignid AND CompanyID = t.CompanyID AND ActivityTypeID NOT IN (1,8))');
+        $criteria->addCondition('RecallDateTime=(SELECT MAX(RecallDateTime) FROM activities WHERE CampaignID=:campaignid AND CompanyID = t.CompanyID AND ActivityTypeID = 1)');
+        $criteria->params = array(':campaignid' => $this->CampaignID);
+        $criteria->order = 'CASE WHEN RecallPrioritary = 1 AND RecallDateTime<NOW() THEN 0 ELSE 1 END, RecallDateTime';
+        return Activity::model()->findAll($criteria);
     }
 
     /* Metodi statici */

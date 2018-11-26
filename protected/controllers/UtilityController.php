@@ -41,6 +41,24 @@ class UtilityController extends TemplateController {
         ));
     }
 
+    public function actionCleanCache() {
+        try {
+            $command = Yii::app()->db->createCommand("DELETE FROM YiiCache")->execute();
+            Yii::app()->user->setFlash('success', 'Cache ripulita!');
+        } catch (CDbException $e) {
+            Yii::app()->user->setFlash('error', 'Impossibile ripulire la cache. Il server riporta: ' . $e->getMessage());
+        }
+        $this->render('cleanCache');
+    }
+
+    public function actionUsers() {
+        $user = new User('search');
+        $user->unsetAttributes();
+        if (isset($_GET['User']))
+            $user->attributes = $_GET['User'];
+        $this->render('users', array('user' => $user));
+    }
+
     public function actionCreateUser() {
         $model = new User;
         if (Yii::app()->getRequest()->isPostRequest) :

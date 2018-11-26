@@ -21,6 +21,7 @@
  */
 class User extends AbstractUserObject {
 
+    public $roleSearch;
     public $_Fake = false; # Impiegato per segnalare che l'utente attuale è un CED "mascherato"
 
     public function attributeLabels() {
@@ -46,6 +47,7 @@ class User extends AbstractUserObject {
             array('Email', 'email', 'message' => 'Indirizzo email non valido'),
             array('RoleID, Gender', 'safe'),
             array('NewPassword', 'default'),
+            array('roleSearch', 'safe', 'on' => 'search'),
         );
     }
 
@@ -177,6 +179,31 @@ class User extends AbstractUserObject {
                 return $e->getMessage();
             }
         }
+    }
+
+    public function search() {
+        $criteria = new CDbCriteria;
+        $criteria->with = array('Role');
+//        $criteria->together = true;
+        $criteria->compare('UserID', $this->UserID, true);
+        $criteria->compare('UserName', $this->UserName, true);
+        $criteria->compare('Email', $this->Email, true);
+        $criteria->compare('Role.Description', $this->roleSearch, true);
+//        $criteria->order = 'UserName ASC';
+        return new CActiveDataProvider($this, array(
+            'criteria' => $criteria,
+            'pagination' => false,
+            'sort' => array(
+                'defaultOrder'=>'UserName ASC',
+                'attributes' => array(
+                    'roleSearch' => array(
+                        'asc' => 'Role.Description',
+                        'desc' => 'Role.Description DESC',
+                    ),
+                    '*',
+                ),
+            ),
+        ));
     }
 
     /* Metodi statici */

@@ -5,6 +5,7 @@
 $this->pageTitle = 'Creazione utente';
 $this->
         addBreadcrumb('Utility')->
+        addBreadcrumb('Utenti', array('/utility/gestione-utenti'))->
         addBreadcrumb($this->pageTitle);
 ?>
 

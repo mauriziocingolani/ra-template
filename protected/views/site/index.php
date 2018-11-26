@@ -27,7 +27,8 @@
         <ul>
             <?php if (Yii::app()->user->isDeveloper()) : ?>
                 <li><?= Html::link('Pulizia db', array('/utility/pulizia-db')); ?></li>
-                <li><?= Html::link('Creazione utente', array('/utility/creazione-utente')); ?></li>
+                <li><?= Html::link('Pulizia cache', array('/utility/pulizia-cache')); ?></li>
+                <li><?= Html::link('Gestione utenti', array('/utility/gestione-utenti')); ?></li>
                 <li>... per Developer ...</li>
             <?php endif; ?>
             <li>...</li>

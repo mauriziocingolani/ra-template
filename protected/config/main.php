@@ -12,7 +12,6 @@ $config->addComponent(array(
         'class' => 'system.caching.CDbCache',
         'connectionID' => 'db',
     ),
-    'twitter' => require(dirname(__FILE__) . '/files/twitter.php'),
     'user' => array(
         'class' => 'comp.ApplicationWebUser',
         'allowAutoLogin' => false,

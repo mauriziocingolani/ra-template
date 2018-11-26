@@ -121,39 +121,5 @@
 
     <?php endif; ?>
 
-    <!-- TWEETS -->
-    <?php if ($tweets) : ?>
-
-        <hr />
-
-        <h3>Storico modifiche</h3>
-
-        <style>
-            .tweet header {margin-bottom: 5px;}
-            .tweet header i {color: #55acee;}
-            .tweet header span {color: #66757f;}
-            .hashtag {color: #55acee;}
-        </style>
-
-        <div style="border: 1px solid #e5eCf9;border-radius: 5px;margin-bottom: 15px;max-height: 250px;overflow: auto;padding: 10px;">
-            <?php foreach ($tweets as $tweet) : ?>
-                <div class="tweet" style="max-width: 400px;">
-                    <header style="text-align: left;">
-                        <i class="fa fa-twitter"></i>
-                        <span><?= date('d-m-Y', strtotime($tweet->created)); ?></span>
-                    </header>
-                    <p><?= $tweet->text; ?></p>
-                </div>  
-            <?php endforeach; ?>
-        </div>
-
-        <p>
-            <a href="https://twitter.com/m_cingolani" class="" target="blank" style="background: #55acee;border-radius: 5px;color: white;padding: 7px;">
-                <i class="fa fa-twitter"></i> Segui @m_cingolani su Twitter
-            </a>
-        </p>
-
-    <?php endif; ?><!-- /tweets -->
-
 <?php endif; ?>
 

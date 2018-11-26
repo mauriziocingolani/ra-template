@@ -18,15 +18,6 @@ class m150825_113129_create_system_tables extends DbMigration {
             'KEY sessions_expire (expire)',
                 ), 'ENGINE=MyISAM CHARSET=utf8'
         );
-        $this->createTable('YiiTweets', array(
-            'id' => 'int(11) UNSIGNED NOT NULL AUTO_INCREMENT',
-            'id_str' => 'varchar(255) NOT NULL',
-            'created' => 'datetime NOT NULL',
-            'text' => 'text NOT NULL',
-            'PRIMARY KEY (id)',
-            'UNIQUE KEY unique_tweets_idstr (id_str)',
-                ), 'ENGINE=MyISAM CHARSET=utf8'
-        );
     }
 
     public function safeDown() {

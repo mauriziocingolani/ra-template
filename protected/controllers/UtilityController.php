@@ -59,20 +59,39 @@ class UtilityController extends TemplateController {
         $this->render('users', array('user' => $user));
     }
 
-    public function actionCreateUser() {
-        $model = new User;
+    public function actionUser($userid = null) {
+        if ($userid) :
+            $model = User::model()->findByPk($userid);
+            if ($model == null) :
+                throw new InvalidDatabaseObjectException('L\'utente', false);
+            endif;
+        else :
+            $model = new User;
+        endif;
         if (Yii::app()->getRequest()->isPostRequest) :
             $model->setAttributes($_POST['User'], true);
             $result = $model->saveModel();
             if ($result === true) :
-                Yii::app()->user->setFlash('success', 'Utente creato! Le credenziali di accesso sono state inviate per email.');
+                Yii::app()->user->setFlash('success', $userid ? 'Utente modificato' : 'Utente creato! Le credenziali di accesso sono state inviate per email.');
             else :
-                Yii::app()->user->setFlash('error', "Impossibile creare il novo utente. Il server riporta:<br /><br /><em>$result</em>");
+                Yii::app()->user->setFlash('error', "Impossibile " . ($userid ? 'aggiornare' : 'creare') . " il novo utente. Il server riporta:<br /><br /><em>$result</em>");
             endif;
+            return $this->redirect('/utility/gestione-utente/' . $model->UserID);
         endif;
-        $this->render('createUser', array(
-            'model' => $model,
-        ));
+        $this->render('user', array('model' => $model));
+    }
+
+    public function actionDelete($id) {
+        $model = User::model()->findByPk($id);
+        try {
+            $model->delete();
+        } catch (CDbException $e) {
+            if ($e->errorInfo[1] == 1451)
+                echo "<div class='flash-error'>L'\utente <strong>" . CHtml::encode($model->UserName) .
+                "</strong> &egrave; gi&agrave; stato utilizzato e non pu&ograve; essere eliminato.</div>";
+        }
+        if (!isset($_GET['ajax']))
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
     }
 
 }

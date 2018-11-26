@@ -31,6 +31,7 @@ class User extends AbstractUserObject {
             'FirstName' => 'Nome',
             'LastName' => 'Cognome',
             'Gender' => 'Sesso',
+            'Enabled' => 'Abilitato',
         );
     }
 
@@ -48,6 +49,7 @@ class User extends AbstractUserObject {
             array('RoleID, Gender', 'safe'),
             array('NewPassword', 'default'),
             array('roleSearch', 'safe', 'on' => 'search'),
+            array('Enabled', 'boolean'),
         );
     }
 
@@ -154,22 +156,26 @@ class User extends AbstractUserObject {
 
     public function saveModel() {
         if ($this->validate()) {
+            $isNew = $this->isNewRecord;
             try {
                 $transaction = Yii::app()->db->beginTransaction();
                 $password = PasswordHelper::GeneratePassword(20, true);
-                $this->Enabled = 1;
+                if ($isNew)
+                    $this->Enabled = 1;
                 $this->Password = CPasswordHelper::hashPassword($password);
                 if ($this->save(false)) :
-                    $message = new YiiMailMessage;
-                    $message->view = 'account';
-                    $message->from = array(Yii::app()->params['webadmin'] => Yii::app()->name);
-                    $message->subject = Yii::app()->name . ' - Credenziali di acesso';
-                    $message->setBody(array('username' => $this->UserName, 'password' => $password), 'text/html');
-                    $message->setTo($this->Email ? $this->Email : Yii::app()->params['admin']['email']);
-                    $message->setCc(Yii::app()->params['admin']['email']);
-                    if (!Yii::app()->mail->send($message)) :
-                        $transaction->rollback();
-                        return 'Imposssibile inviare il messaggio email con le credenziali del nuovo utente. Creazione abortita.';
+                    if ($isNew) :
+                        $message = new YiiMailMessage;
+                        $message->view = 'account';
+                        $message->from = array(Yii::app()->params['webadmin'] => Yii::app()->name);
+                        $message->subject = Yii::app()->name . ' - Credenziali di acesso';
+                        $message->setBody(array('username' => $this->UserName, 'password' => $password), 'text/html');
+                        $message->setTo($this->Email ? $this->Email : Yii::app()->params['admin']['email']);
+                        $message->setCc(Yii::app()->params['admin']['email']);
+                        if (!Yii::app()->mail->send($message)) :
+                            $transaction->rollback();
+                            return 'Imposssibile inviare il messaggio email con le credenziali del nuovo utente. Creazione abortita.';
+                        endif;
                     endif;
                 endif;
                 $transaction->commit();
@@ -194,7 +200,7 @@ class User extends AbstractUserObject {
             'criteria' => $criteria,
             'pagination' => false,
             'sort' => array(
-                'defaultOrder'=>'UserName ASC',
+                'defaultOrder' => 'UserName ASC',
                 'attributes' => array(
                     'roleSearch' => array(
                         'asc' => 'Role.Description',

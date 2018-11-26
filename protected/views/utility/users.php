@@ -56,7 +56,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                     'label' => '<i class="fa fa-pencil"></i>',
                     'imageUrl' => false,
                     'options' => array('title' => 'Clicca per modificare l\'utente'),
-                    'url' => 'CHtml::normalizeUrl(array("utility/gastione-utente/".$data->UserID))',
+                    'url' => 'CHtml::normalizeUrl(array("utility/gestione-utente/".$data->UserID))',
                 ),
                 'delete' => array(
                     'label' => '<i class="fa fa-trash"></i>',

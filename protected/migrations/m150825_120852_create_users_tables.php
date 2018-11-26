@@ -24,6 +24,7 @@ class m150825_120852_create_users_tables extends DbMigration {
             'LastName' => self::TypeVarchar(255, true),
             'Gender' => 'enum(\'M\',\'F\') COLLATE latin1_general_ci NOT NULL DEFAULT \'M\'',
             'Password' => 'text NOT NULL',
+            'NewPassword' => 'text',
             'Email' => self::TypeVarchar(255),
             'Enabled' => 'tinyint(1) NOT NULL',
             self::Pk('UserID'),

@@ -1,7 +1,12 @@
 <?php
 
+if (false) :
+    require './init.php';
+    die();
+endif;
+
 // change the following paths if necessary
-$yii = dirname(__FILE__) . '/../../../yii-framework/yii.php';
+$yii = dirname(__FILE__) . '/../yii/framework.1.20/yii.php';
 $config = dirname(__FILE__) . '/protected/config/main.php';
 
 require './debug.php';

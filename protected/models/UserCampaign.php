@@ -54,7 +54,7 @@ class UserCampaign extends CActiveRecord {
         $criteria = new CDbCriteria;
         $criteria->with = array('Creator', 'Company');
         $criteria->addCondition('CampaignID=:campaignid');
-        $criteria->addCondition('NOT EXISTS (SELECT * FROM activities WHERE CampaignID=:campaignid AND CompanyID = t.CompanyID AND ActivityTypeID NOT IN (1,8))');
+        $criteria->addCondition("NOT EXISTS (SELECT * FROM activities JOIN activity_types USING(ActivityTypeID) WHERE CampaignID=:campaignid AND CompanyID = t.CompanyID AND Category NOT IN ('R','N'))");
         $criteria->addCondition('RecallDateTime=(SELECT MAX(RecallDateTime) FROM activities WHERE CampaignID=:campaignid AND CompanyID = t.CompanyID AND ActivityTypeID = 1)');
         $criteria->params = array(':campaignid' => $this->CampaignID);
         $criteria->order = 'CASE WHEN RecallPrioritary = 1 AND RecallDateTime<NOW() THEN 0 ELSE 1 END, RecallDateTime';

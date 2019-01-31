@@ -1,24 +1,17 @@
 <?php
 
-$home = dirname(__FILE__);
-# cartella assets
-echo 'Check cartella /assets... ';
-$assetsFolder = $home . '/assets';
-if (!file_exists($assetsFolder)) :
-    mkdir($assetsFolder);
-    chmod($assetsFolder, 0777);
-    echo "creata. OK\n";
-else :
-    echo "presente. OK\n";
-endif;
-# cartella assets
-echo 'Check cartella /protected/runtime... ';
-$runtimeFolder = $home . '/protected/runtime';
-if (!file_exists($runtimeFolder)) :
-    mkdir($runtimeFolder);
-    chmod($runtimeFolder, 0777);
-    echo "creata. OK\n";
-else :
-    echo "presente. OK\n";
-endif;
+$folder = dirname(__FILE__);
+$folders = array('assets', 'protected/runtime', 'files', 'files/reports', 'files/uploads');
+
+foreach ($folders as $f) :
+    if (!file_exists("$folder/$f")) :
+        mkdir("$folder/$f", 0777);
+        echo "* Creata cartella /$f con permessi 0777\r\n";
+    elseif (fileperms("$folder/$f") != 16895) :
+        chmod("$folder/$f", 0777);
+        echo "* Modificati permessi cartella /$f in 0777\r\n";
+    else :
+        echo "* Cartella /$f ok\r\n";
+    endif;
+endforeach;
 

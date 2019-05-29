@@ -12,7 +12,7 @@ Yii::app()->clientScript->registerCoreScript('jquery');
 ?>
 
 <h1>
-    <?php if ($model->isNewRecord || $justCreated) : ?>
+    <?php if ($model->isNewRecord) : ?>
         Nuovo indirizzo email per l'azienda <u><?= Html::encode($company->CompanyName); ?></u>
     <?php else : ?>
         Modifica indirizzo email per l'azienda <u><?= Html::encode($company->CompanyName); ?></u>
